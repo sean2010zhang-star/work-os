@@ -224,3 +224,9 @@ git clone https://github.com/sean2010zhang-star/work-os && cd work-os && ./insta
 ## 许可
 
 MIT —— 纪律理应自由 fork。这就是重点。
+
+## System guide (visual)
+
+An illustrated one-page overview of the whole workflow — routing protocol, L1–L4 tiers,
+Gate chain, campaign protocol, memory loop — in Chinese+English, zero dependencies:
+**[`docs/system-guide.html`](docs/system-guide.html)** (open in any browser).
