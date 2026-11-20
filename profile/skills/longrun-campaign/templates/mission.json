@@ -1,0 +1,15 @@
+{
+  "campaign_id": "<slug>",
+  "contract_version": "1.0",
+  "cursor": { "phase": 1, "sprint": 1, "state": "gate0-review | executing | gate-N | blocked | done" },
+  "gates": {
+    "gate0_material_review": { "result": "PENDING", "evidence": "", "reviewer": "independent-agent" },
+    "sprint_history": []
+  },
+  "budget": { "token_cap": 0, "token_spent": 0, "sprint_cap": 0, "sprints_used": 0, "wallclock_deadline": "" },
+  "constraints_status": { "C1": "unchecked", "C2": "unchecked" },
+  "open_items": [],
+  "interrupt_log": [],
+  "last_checkpoint_at": "",
+  "next_action": "（断点恢复时从这里继续）"
+}

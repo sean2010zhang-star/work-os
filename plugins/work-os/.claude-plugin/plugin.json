@@ -1,0 +1,17 @@
+{
+  "name": "work-os",
+  "description": "Execution discipline for AI agents \u2014 routing-first protocol, iron laws, Sprint\u00d7Gate gating, memory feedback loop, campaign protocol for long autonomous runs.",
+  "version": "1.4.5",
+  "author": {
+    "name": "sean2010zhang-star"
+  },
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "discipline",
+    "gate",
+    "agent-protocol",
+    "memory"
+  ],
+  "category": "workflow"
+}

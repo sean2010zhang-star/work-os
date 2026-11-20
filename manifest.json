@@ -1,0 +1,89 @@
+{
+  "name": "work-os",
+  "version": "1.4.5",
+  "description": "Work OS discipline system installer. Detects agent hosts, installs the full system as a Hermes profile (preferred) or generic plugin pack.",
+  "host_detection": {
+    "hermes": [
+      "hermes",
+      "~/.hermes"
+    ],
+    "claude_code": [
+      "claude",
+      "~/.claude"
+    ],
+    "codex": [
+      "codex",
+      "~/.codex"
+    ],
+    "generic": []
+  },
+  "actions_hermes": [
+    {
+      "id": "profile",
+      "desc": "Create/refresh ~/.hermes/profiles/work-os with SOUL.md + 15 skills + memory/",
+      "script": "install.sh#do_hermes_profile"
+    },
+    {
+      "id": "model",
+      "desc": "Copy model/provider block from user's active config (never ships keys)",
+      "script": "install.sh#do_hermes_profile"
+    },
+    {
+      "id": "deps",
+      "desc": "hermes doctor check + enable toolsets: skills memory delegation file terminal code_execution",
+      "script": "install.sh#do_hermes_profile"
+    },
+    {
+      "id": "verify",
+      "desc": "One-shot chat proving SOUL loaded (routing block appears in response)",
+      "script": "install.sh#verify_hermes"
+    }
+  ],
+  "actions_generic": [
+    {
+      "id": "plugin",
+      "desc": "Install marketplace plugin pack (AGENTS.md protocol + 8 portable skills)",
+      "manual": "see README install section"
+    },
+    {
+      "id": "memory-seed",
+      "desc": "Copy memory/ seed into user project, point protocol paths at it",
+      "manual": "see docs/usage.md"
+    }
+  ],
+  "dependencies": {
+    "required": [
+      "python3.11+ (via Hermes install)",
+      "git"
+    ],
+    "optional": [
+      {
+        "name": "node",
+        "why": "node --check red-line in delivery gates",
+        "install": "https://nodejs.org"
+      },
+      {
+        "name": "gh",
+        "why": "github-backed backup layer",
+        "install": "https://cli.github.com"
+      },
+      {
+        "name": "rsync",
+        "why": "external-drive backup layer (auto on macos/linux)",
+        "install": "usually preinstalled"
+      }
+    ],
+    "accounts": [
+      {
+        "name": "LLM provider key",
+        "how": "copied from your existing hermes config; nothing shipped",
+        "required": true
+      },
+      {
+        "name": "GitHub token (repo-scoped)",
+        "how": "only if you adopt GitHub backup; see skills in the pack",
+        "required": false
+      }
+    ]
+  }
+}
