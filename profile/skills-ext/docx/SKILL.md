@@ -6,6 +6,9 @@ license: Complete terms in LICENSE.txt
 
 # DOCX creation, editing, and analysis
 
+> **Python >= 3.10 required** for the bundled scripts (`scripts/office/validate.py` uses `match` statements; SyntaxError on 3.9). Run with your 3.11+ Hermes/python3.11 explicitly.
+
+
 A `.docx` is a ZIP archive of XML files. Choose your approach by task:
 
 | Task | Approach |

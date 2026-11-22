@@ -6,7 +6,7 @@ author: Hermes Agent
 license: MIT
 category: foundation
 tags: [benchmark, evaluation, protocol, skill-dev, iteration]
-related_skills: [longrun-campaign-v2, tool-and-repo-evaluation, experiment-driven-system-dev]
+related_skills: [longrun-campaign, consolidated-iron-laws, work-os-router]
 metadata:
   hermes:
     tags: [benchmark, evaluation, protocol]

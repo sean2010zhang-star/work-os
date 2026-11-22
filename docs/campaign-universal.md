@@ -8,7 +8,7 @@ run the same protocol with these mappings — the discipline is identical, only 
 |---|---|---|
 | Mission Contract | `campaign/<id>/CONTRACT.md` | same file convention — works everywhere |
 | Gate 0 material review | independent `delegate_task` reviewer (read-only) | host's subagent/review mechanism (Claude Code: subagents / `/review`; Codex: separate session; dsh: `ctx.subagents`) with an explicit "read-only, no dev context" prompt |
-| Sprint loop + Gates | sprint-gated-delivery skill | follow `sprint-with-tiers` skill (included in the 8 portable skills) |
+| Sprint loop + Gates | sprint-gated-delivery skill | follow `sprint-with-tiers` skill (included in the 9 portable skills) |
 | Independence | different context per auditor | **non-negotiable**: never let the dev session audit itself; use a fresh session/subagent that sees only artifacts + design docs |
 | Checkpoints | mission.json + STATUS.md | same templates in `templates/` — copy them into your repo; commit every Sprint boundary (git becomes the crash-recovery backbone) |
 | Budget circuit-breaker | host token stats | if your host can't meter tokens, meter sprints + wallclock only (still 2 of 3 tripwires) |

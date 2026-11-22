@@ -2,7 +2,7 @@
 name: delivery-audit
 version: 1.0.0
 description: 交付审计 — 四类Gate（pre-flight/revision/escalation/abort）自动检查 + 审计报告 + 自动归档
-related_skills: [auto-router, multi-agent-standards]
+related_skills: [work-os-router, consolidated-iron-laws, sprint-with-tiers]
 ---
 
 # Delivery-Audit — 交付审计

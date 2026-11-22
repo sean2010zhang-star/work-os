@@ -29,7 +29,9 @@ and the installer reproduces them unevenly. Knowing which is which prevents disa
 
 1. **Model dependence**: laws are prompt-level; compliance rate scales with the host model's
    instruction-following. Strong models: near-deterministic. Weak models: useful but leaky —
-   hard enforcement (hook-level deny) is the Gatekeeper roadmap item.
+   hard enforcement (hook-level deny) shipped in v1.7.0 as `gatekeeper/` — L1 enforcement moves
+   from advisory to code-enforced on hosts with real hooks (Claude Code today; Hermes via
+   SOUL-wired CLI calls until its plugin hook bus lands).
 2. **Token metering** in campaign budgets depends on host stats availability.
 3. **Universal Edition** (non-Hermes hosts) = L1 (~70%: no SOUL-level forced injection, no
    auto-campaign detection) + half of L2 + L3 via manual file wiring. The Hermes Edition is

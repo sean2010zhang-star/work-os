@@ -6,6 +6,9 @@ license: Complete terms in LICENSE.txt
 
 # XLSX creation, editing, and analysis
 
+> **Python >= 3.10 required** for the bundled scripts (`scripts/office/validate.py` uses `match` statements; SyntaxError on 3.9). Run with your 3.11+ Hermes/python3.11 explicitly.
+
+
 | Task | Approach |
 |---|---|
 | **Create** or **edit** with formulas/formatting | `openpyxl` — see gotchas below |

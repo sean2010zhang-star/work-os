@@ -3,7 +3,7 @@
 > **Skill decides what an agent KNOWS. Agent decides how it THINKS.
 > Harness decides what it CANNOT SKIP.** This is the harness.
 
-The Work OS repo ships layers 1 and 2 (47 skills = knowledge; AGENTS.md/SOUL.md = how to
+The Work OS repo ships layers 1 and 2 (48 skills = knowledge; AGENTS.md/SOUL.md = how to
 think). Gatekeeper is layer 3: a single-file, stdlib-only Python CLI that wires into your
 host's hook system and **enforces the iron laws in code** — an agent cannot quietly skip
 them anymore.

@@ -1,6 +1,6 @@
 {
   "name": "work-os",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Work OS discipline system installer. Detects agent hosts, installs the full system as a Hermes profile (preferred) or generic plugin pack.",
   "host_detection": {
     "hermes": [
@@ -20,7 +20,7 @@
   "actions_hermes": [
     {
       "id": "profile",
-      "desc": "Create/refresh ~/.hermes/profiles/work-os with SOUL.md + 15 skills + memory/",
+      "desc": "Create/refresh ~/.hermes/profiles/work-os with SOUL.md + 18 system skills + 30 external skills + memory/",
       "script": "install.sh#do_hermes_profile"
     },
     {
@@ -42,13 +42,13 @@
   "actions_generic": [
     {
       "id": "plugin",
-      "desc": "Install marketplace plugin pack (AGENTS.md protocol + 8 portable skills)",
+      "desc": "Install marketplace plugin pack (AGENTS.md protocol + 9 portable skills)",
       "manual": "see README install section"
     },
     {
       "id": "memory-seed",
       "desc": "Copy memory/ seed into user project, point protocol paths at it",
-      "manual": "see docs/usage.md"
+      "manual": "see README.md (install paths) and gatekeeper/README.md (harness)"
     }
   ],
   "dependencies": {
@@ -69,7 +69,7 @@
       },
       {
         "name": "rsync",
-        "why": "external-drive backup layer (auto on macos/linux)",
+        "why": "fast skill-sync path + external-drive backup layer (cp -R fallback in install.sh if absent; auto on macos/linux)",
         "install": "usually preinstalled"
       }
     ],

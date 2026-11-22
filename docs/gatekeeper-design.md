@@ -124,7 +124,7 @@ Python 3.11+，零重依赖（stdlib + pyyaml）；单包 `gatekeeper/`；预估
 | S1 轻量 | `init` + claude_code adapter + SessionStart 注入 | 1+2 | 新 Claude Code 会话自动带路由协议；golden 链测试 |
 | S2 标准 | PreToolUse 三规则（plan-before-write / auditor git-guard / mock-scan）+ state 机 + approve 命令 | 1-4 | 红队测试：故意违规 5 例全被 deny，正常流程 0 误伤 |
 | S3 标准 | Stop hook（clean-close + 完成度清单）+ gate_log + `report` | 1-4 | 上述 P0 事故 5 例重放，全部在当时代被拦截（用事故报告做 fixtures） |
-| S4 重型 | codex adapter + rules 自定义文档 + v1.2.0 release | 1-5 | 双宿主 E2E；用户价值门：找一个非本人团队试用给反馈 |
+| S4 重型 | codex adapter + rules 自定义文档 + v0.1 release (shipped in repo v1.7.0) | 1-5 | 双宿主 E2E；用户价值门：找一个非本人团队试用给反馈 |
 
 风险预案：① 误伤（正常操作被 deny）→ require-ack 兜底 + `override` 逃生门 + 规则可关；② 宿主 hook 协议变更 → adapter 隔离，回归测试锁 golden；③ agent 学会绕 hook（如用 python 脚本写文件躲开 Edit 工具）→ Bash 侧内容检查补充，且明确声明"防失误不防恶意"。
 

@@ -86,7 +86,7 @@
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Work OS · System Guide · v1.6</div>
+  <div class="eyebrow">Work OS · System Guide · v1.7</div>
   <h1>AI Agent 执行纪律体系 —<br>工作体系全景与处理流程图</h1>
   <p class="lede">
     本文档回答一个问题：<strong>装上 Work OS 之后，你的 Agent 到底会怎样工作？</strong>
@@ -133,14 +133,15 @@
 </div>
 
 <!-- ═══════════════ 2. 体系分层 ═══════════════ -->
-<h2>02 · 体系五层 <span class="en">The system, stacked</span></h2>
-<p class="sub">从上到下：协议约束行为，方法提供套路，质量层拦截缺陷，记忆层让系统每周变锋利，资产层沉淀为可复用 skill。</p>
+<h2>02 · 体系六层 <span class="en">The system, stacked</span></h2>
+<p class="sub"><p class="sub">从上到下：协议约束行为，方法提供套路，质量层拦截缺陷，记忆层让系统每周变锋利，资产层沉淀为可复用 skill。</p>
 <div class="stack">
   <div class="layer focal"><span class="ln">协议层 PROTOCOL</span><span class="le">SOUL.md / AGENTS.md</span><span class="ld">路由决策 · 5 铁律 · 10 建议 · 质量红线 · 收尾清单 — 作为系统提示词每次注入，无法绕过</span></div>
   <div class="layer"><span class="ln">决策层 ROUTING</span><span class="le">work-os-router</span><span class="ld">任务 → 分类 / 复杂度 L1-L4 / 模式 M1-M18 / Sprint 级 / Gate 级 / 记忆状态，≤5 行输出，先于一切动作</span></div>
   <div class="layer"><span class="ln">方法层 METHODS</span><span class="le">48 skills</span><span class="ld">18 系统 skill（方法论/审计/战役协议/版本管理…）+ 30 精选外部 skill（开发套件/GitHub/文档/研究）</span></div>
   <div class="layer"><span class="ln">质量层 QUALITY</span><span class="le">Gate 0–5</span><span class="ld">Pre-flight → Revision → Integration → 独立终审 → 用户价值门；FAIL 3 次强制上报</span></div>
   <div class="layer"><span class="ln">记忆层 MEMORY</span><span class="le">memory/ 四件套</span><span class="ld">_INDEX · 偏好 · 工作流规范 · 项目档案 — 每任务先读，做完回灌，教训写进对应 skill</span></div>
+<div class="layer"><span class="ln">HARNESS 执法层</span><span class="le">gatekeeper/</span><span class="ld">铁律的代码形态：deny/ack/warn 三级强度 hook 级拦截 · approve 只认人类 · 6 宿主适配器 — 决定「能不能跳过」</span></div>
 </div>
 
 <!-- ═══════════════ 3. 主流程图 ═══════════════ -->
@@ -458,8 +459,36 @@
 </div>
 <p class="note">该协议的迭代靠对抗评测驱动（见 <code>profile/skills/protocol-doc-benchmarking/</code>）：真实事故改编的迷宫题 + 预先写死的中立判据 + 每轮全新 Runner 复跑——对称题曾给融合版 97.5/100，同一文档换真实事故题仅 66，这个偏置教训本身就是方法论的第一条。</p>
 
-<!-- ═══════════════ 7. 记忆闭环 ═══════════════ -->
-<h2>07 · 记忆闭环 <span class="en">The memory feedback loop</span></h2>
+<!-- ═══════════════ 7. Gatekeeper harness ═══════════════ -->
+<h2>07 · 第三层 Harness：Gatekeeper <span class="en">what it cannot skip</span></h2>
+<p class="sub">Skill 决定知道什么，Agent 决定怎么想，Harness 决定<b>能不能跳过</b>。v1.7 起第三层落地为可运行 CLI（gatekeeper/，单文件零依赖）：把铁律变成 hook 级拦截，而不是提示词里的自觉。</p>
+<div class="grid2">
+  <div class="card">
+    <span class="tag red">deny · 5 条默认规则 = 铁律代码形态</span>
+    <ul class="laws">
+      <li><b>iron-1</b> L3+ 未经人类批准 PLAN，任何写操作直接拦截（模型收到被违反铁律原文）</li>
+      <li><b>iron-11</b> auditor/review 角色禁止一切 git 写（"checkout 冲掉未提交工作"事故类）</li>
+      <li><b>iron-3</b> Stop 钩子：工作区脏 / 无本次 commit / 无 ✅⚠️❌ 清单 = 不许宣布完成</li>
+      <li>require-ack 对应 10 条建议：跳过须写 ≥10 字理由，且绑定当前路由，重新路由即失效</li>
+      <li>warn 对应质量红线（如 mock 指纹扫描）</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">核心性质：Agent 无法给自己开绿灯</span>
+    <p style="font-size:13.5px"><b>approve / override 只认人类</b>——真实 TTY 交互确认，或用户本人放置的签名文件；非交互调用一律拒绝并记入 append-only 审计。<code>gatekeeper doctor</code> 先跑负向自检（每条 deny 必须拦得住构造的违规才算数），13 条红队+金样例 E2E 守着引擎本身；<code>report</code> 统计规则触发频次，提示脚本化/降级/删除（规则新陈代谢）。</p>
+  </div>
+</div>
+<div class="card accent" style="margin-top:20px">
+  <span class="tag">同一内核 · 六个插头（adapters.py）</span>
+  <pre>claude_code → .claude/settings.json 真实 hook（硬拦截+理由回灌）   hermes → SOUL 接线+cron 看门狗
+codex → AGENTS.md 命令块        trae → .trae/rules 项目规则
+workbuddy → 专家 SOP 注入        generic → 系统提示词粘贴
+# 六家共享同一 .gatekeeper/ 状态格式：一套大脑，六个适配器</pre>
+  <p class="note">诚实边界：拦的是失误与漂移，不防刻意对抗（绕过 Write matcher 的路径在 limits 中登记）；OS/沙箱级强制列为 v1.8+ 评估项，不虚标。</p>
+</div>
+
+<!-- ═══════════════ 8. 记忆闭环 ═══════════════ -->
+<h2>08 · 记忆闭环 <span class="en">The memory feedback loop</span></h2>
 <p class="sub">纪律管第一次做对，记忆管第二次更聪明。分层原则：长期结构化 → 记忆库文件；碎片事实 → 宿主 memory 工具；过程证据 → 会话历史检索。</p>
 <table>
   <tr><th>文件</th><th>内容</th><th>更新时机</th></tr>
@@ -470,8 +499,8 @@
 </table>
 <p class="note">自进化通道（Hermes Edition）：Agent 在工作中沉淀的新流程直接写入 profile skills——技能库随使用生长，Universal Edition 为手动编辑。</p>
 
-<!-- ═══════════════ 8. 安装与验收 ═══════════════ -->
-<h2>08 · 安装与首跑验收 <span class="en">Install &amp; first-run acceptance test</span></h2>
+<!-- ═══════════════ 9. 安装与验收 ═══════════════ -->
+<h2>09 · 安装与首跑验收 <span class="en">Install &amp; first-run acceptance test</span></h2>
 <div class="grid2">
   <div class="card">
     <span class="tag">Hermes Edition（完整体系）</span>
@@ -496,7 +525,7 @@ codex plugin marketplace add sean2010zhang-star/work-os
 </div>
 
 <div class="foot">
-  <span>Work OS v1.6 · Execution Discipline for AI Agents · MIT</span>
+  <span>Work OS v1.7 · Execution Discipline for AI Agents · MIT</span>
   <span>github.com/sean2010zhang-star/work-os · docs/effectiveness.md 查看诚实效果分层</span>
 </div>
 </div>

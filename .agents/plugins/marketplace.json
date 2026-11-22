@@ -6,14 +6,14 @@
     "description": "Execution discipline for agents: routing protocol, iron laws, Gate gating.",
     "category": "Workflow"
   },
-  "version": "1.7.0",
+  "version": "1.7.1",
   "plugins": [
     {
       "id": "work-os",
       "publication": "./plugins/work-os",
       "interface": {
         "displayName": "Work OS Discipline",
-        "description": "8 skills + AGENTS.md protocol + memory seed. Host-agnostic."
+        "description": "9 skills + AGENTS.md protocol + memory seed. Host-agnostic."
       },
       "policy": {
         "defaultEnabled": true,

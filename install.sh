@@ -28,7 +28,7 @@ HERMES_BIN="$(command -v hermes || true)"
 [ -z "$HERMES_BIN" ] && [ -x "$HOME/.local/bin/hermes" ] && HERMES_BIN="$HOME/.local/bin/hermes"
 if [ -z "$HERMES_BIN" ]; then
   say "Hermes not found."
-  say "This installer's full path (profile + SOUL + 15 skills + memory) requires Hermes:"
+  say "This installer's full path (profile + SOUL + 18+30 skills + memory) requires Hermes:"
   say "  curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash"
   say "then re-run ./install.sh"
   say ""
@@ -57,7 +57,16 @@ say "SOUL.md installed (system prompt = Work OS protocol)."
 
 # ── 3. skills ─────────────────────────────────────────────────
 run mkdir -p "$PROFILE_DIR/skills"
-run rsync -a --delete --exclude='__pycache__' --exclude='.DS_Store' "$DIR/profile/skills/" "$PROFILE_DIR/skills/"
+if command -v rsync >/dev/null; then
+  rsync -a --delete --exclude='__pycache__' --exclude='.DS_Store' "$DIR/profile/skills/" "$PROFILE_DIR/skills/"
+else
+  # rsync is a REQUIRED dep here (not optional): degrade to rm+cp so installs don't die mid-flight
+  say "rsync missing — using rm+cp fallback for system skills (slower, same result)"
+  mkdir -p "$PROFILE_DIR/skills"
+  rm -rf "$PROFILE_DIR/skills"/* 2>/dev/null || true
+  cp -R "$DIR/profile/skills/." "$PROFILE_DIR/skills/"
+  find "$PROFILE_DIR/skills" -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null || true
+fi
 NSK="$(ls "$DIR/profile/skills" | wc -l | tr -d ' ')"
 say "$NSK system skills installed (incl. sprint-gated-delivery + longrun-campaign) → self-evolution channel open (skill_manage writes here)."
 
@@ -67,7 +76,12 @@ if [ -d "$DIR/profile/skills-ext" ]; then
   if [ "$DRY" = 1 ]; then
     echo "  DRY: rsync skills-ext -> $PROFILE_DIR/skills/"
   else
-    rsync -a --exclude='__pycache__' --exclude='.DS_Store' "$DIR/profile/skills-ext/" "$PROFILE_DIR/skills/"
+    if command -v rsync >/dev/null; then
+      rsync -a --exclude='__pycache__' --exclude='.DS_Store' "$DIR/profile/skills-ext/" "$PROFILE_DIR/skills/"
+    else
+      cp -R "$DIR/profile/skills-ext/." "$PROFILE_DIR/skills/"
+      find "$PROFILE_DIR/skills" -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null || true
+    fi
     NE="$(ls "$DIR/profile/skills-ext" | wc -l | tr -d ' ')"
     TOT="$(ls -d "$PROFILE_DIR/skills/"*/ 2>/dev/null | wc -l | tr -d ' ')"
     say "$NE curated external skills added ($TOT total in profile skills)."
@@ -132,7 +146,7 @@ say "Optional dependencies check:"
 command -v git >/dev/null && say "  git  ✓ (version iron-law works)" || say "  git  ✗ REQUIRED — install first"
 command -v node >/dev/null && say "  node ✓ (JS syntax red-line available)" || say "  node ○ optional: install for the 'node --check' red-line"
 command -v gh >/dev/null && say "  gh   ✓ (github backup layer available)" || say "  gh   ○ optional: GitHub backup layer"
-command -v rsync >/dev/null && say "  rsync ✓ (external-drive backup layer)" || say "  rsync ○ optional"
+command -v rsync >/dev/null && say "  rsync ✓ (fast path; cp -R fallback used if absent)"
 say "Accounts: LLM provider — copied from your Hermes config above; GitHub token — only if"
 say "you adopt that backup layer; the pack ships placeholders, never keys."
 

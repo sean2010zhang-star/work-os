@@ -92,7 +92,7 @@ sed替换90%，但JSX拆分元素(`Career<span>Forge</span>`)需手动patch。
 ### P0: IntersectionObserver不触发已在视口的元素
 用IntersectionObserver做滚动入场动画时，页面加载时已在视口内的元素可能不触发回调 → 元素永久不可见（如果CSS设了opacity:0）。
 **铁律**: 元素默认可见，只在滚动进入时添加动画效果。必须有安全兜底（timeout强制可见）。
-**详见**: `resume-portfolio-builder` skill的`references/tailwind-animation-injection.md`
+**排查顺序**: 动效异常先验证选择器命中、元素初始状态（默认隐藏=看不见）、清理函数，再怀疑框架本身。。动效异常先验证选择器、初始状态（默认隐藏则不可见）与清理函数，再怀疑框架。
 
 ### P1: localStorage陷阱
 前端用localStorage持久化+hardcoded默认值，看起来有数据但从未调用API。

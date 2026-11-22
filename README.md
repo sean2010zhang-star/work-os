@@ -27,7 +27,7 @@ library, and a memory loop that gets sharper every week you use it.
 ## Three layers, not three choices
 
 ```
-SKILL    decides what the agent KNOWS        → 47 skills (knowledge, procedures, pitfalls)
+SKILL    decides what the agent KNOWS        → 48 skills (knowledge, procedures, pitfalls)
 AGENT    decides HOW the agent thinks        → SOUL.md / AGENTS.md (routing, laws, memory loop)
 HARNESS  decides what it CANNOT SKIP         → gatekeeper/ (hooks that deny in code)
 ```
@@ -59,10 +59,10 @@ own gates. 13 red-team + golden E2E cases guard every rule.
 | For | anyone running [Hermes Agent](https://github.com/NousResearch/hermes-agent) | Claude Code, Codex CLI, Cursor, Windsurf, Cline, Copilot, dsh, OpenCode… |
 | Install | `./install.sh` (one command) | marketplace add, or copy `AGENTS.md` |
 | Protocol | full system prompt (SOUL.md: routing + laws + red-lines + memory protocol) | `AGENTS.md` (same laws, same loop) |
-| Skills | **18 system + 30 curated external** = 48 (incl. **V3.4 campaign protocol** with 8 machine-check scripts) | **8** portable + campaign mapping (`docs/campaign-universal.md`) |
+| Skills | **18 system + 30 curated external** = 48 (incl. **V3.4 campaign protocol** with 8 machine-check scripts) | **9** portable + campaign mapping (`docs/campaign-universal.md`) |
 | Memory loop | profile `memory/` seeded; agent reads each task, updates after — full feedback loop | same 4-file seed, wired via `memory/` dir in your project |
 | Self-evolution | yes — new skills save into the profile automatically | manual (edit skill files) |
-| Enforcement | protocol-disciplined (advisory) | protocol-disciplined; hard hook-blocking = Gatekeeper roadmap |
+| Enforcement | protocol + **Gatekeeper CLI** (hard hooks on Claude Code; strongest form per host) | protocol-disciplined (advisory) |
 
 ### Hermes Edition — one command
 
@@ -125,12 +125,12 @@ vertical domain assets intentionally not included. Includes a 2-minute first-run
 
 ## Roadmap
 
-- **v1.4.x (current)** — the discipline pack: protocol + 47 skills + memory seeds + first-run
-  interview + campaign protocol. Hermes + Claude Code + Codex adapters.
-- **v1.5+** — **Gatekeeper**: thin CLI wrapping Claude Code / Codex / dsh via their hook systems
-  and *enforcing* the gates in code (pre-tool-use blocks, stop-hook completion checks).
-  Design in `docs/gatekeeper-design.md`.
-- **v2.0** — expert-persona packaging for agent-expert platforms (role spec + SOP + knowledge base).
+- **v1.7.x (current)** — three layers live: protocol + 48 skills (know) + SOUL/AGENTS (think)
+  + **Gatekeeper v0.1** (cannot-skip: single-file CLI, 6 host adapters, 13 red+golden E2E).
+  Hermes + Claude Code + Codex + Trae + WorkBuddy + generic wiring.
+- **v1.8+** — Hermes plugin exposing the hook bus natively; dsh adapter once it exits rc;
+  OS/sandbox-level forcing evaluated honestly (see gatekeeper/README limits, no overclaiming).
+- **v2.0** — expert-persona packaging for agent-expert platforms. Early artifact already in-tree: `expert-package/` (role spec + SOP template, not yet wired into install).
 
 ## Philosophy
 
@@ -205,7 +205,7 @@ PreToolUse/Stop hook（硬 deny + 把违反的铁律原文回灌给模型）；H
 | Skill | **18 系统 + 30 精选外部** = 48（含战役协议 V3.4 + 机检武器库） | **9** 个可移植 + 战役协议映射（`docs/campaign-universal.md`） |
 | 记忆闭环 | profile 内 `memory/` 预置；Agent 每任务先读、做完即更新 | 同样的 4 文件种子，通过项目 `memory/` 目录接入 |
 | 自进化 | 有 — 新 skill 自动存入 profile | 手动（编辑 skill 文件） |
-| 强制力 | 协议级约束（建议性） | 协议级约束；hook 硬拦截 = Gatekeeper 路线图 |
+| 强制力 | 协议 + **Gatekeeper CLI**（Claude Code 硬 hook；各宿主接最强形态） | 协议级约束（建议性） |
 
 ### Hermes Edition — 一条命令
 
@@ -263,12 +263,11 @@ git 写拦截闸），见 `profile/skills/longrun-campaign/scripts/`，非 Herme
 
 ## 路线图
 
-- **v1.5.x（当前）** — 纪律包本体：协议 + 47 skill + 记忆种子 + 首跑采访 + 战役协议。
-  Hermes / Claude Code / Codex 三宿主适配。
-- **v1.6（现在）** — **Gatekeeper v0.1 已落地**：`gatekeeper/gatekeeper.py`——harness 层
-  成为可运行 CLI，6 宿主适配器（`adapters.py`），deny/ack/warn 三级强度对应三级铁律体系，
-  人类专属 approve，规则新陈代谢 report，红队+金样例测试套件。设计稿转为实现注记。
-- **v1.7+** — Hermes 插件原生暴露 hook 总线；dsh 过 rc 期后加适配；OS/沙箱级强制在
+- **v1.7.x（当前）** — 三层全部在线：协议 + 48 skill（知道什么）+ SOUL/AGENTS（怎么想）+
+  **Gatekeeper v0.1**（能不能跳过：单文件 CLI、6 宿主适配器、13 条红队+金样例 E2E、
+  deny/ack/warn 三级强度对应三级铁律、人类专属 approve、规则新陈代谢 report）。
+  Hermes / Claude Code / Codex / Trae / WorkBuddy / generic 六宿主接线。
+- **v1.8+** — Hermes 插件原生暴露 hook 总线；dsh 过 rc 期后加适配；OS/沙箱级强制在
   limits 里诚实评估，不虚标。
 - **v2.0** — Agent 专家平台的专家人设封装（岗位说明书 + SOP + 知识库）。
 

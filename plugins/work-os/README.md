@@ -42,9 +42,10 @@ cp -r memory/ <your-project>/memory/    # then fill 偏好.md with 3-5 of your p
   pure prompt text.
 - **Host-dependent**: skill auto-loading (native on Claude Code/Codex; manual `read`
   elsewhere), and enforcement strength — prompts advise, they don't block. Hard blocking
-  (deny/ack/warn gates via hooks) is the Gatekeeper roadmap item
+  (deny/ack/warn gates via hooks) has shipped as Gatekeeper v0.1 — run it from the repo root:
+  `python3 gatekeeper/gatekeeper.py init --host claude_code` inside your project
   (repo `docs/gatekeeper-design.md`); it also needs no Hermes.
-- **Not in this edition**: the other 7 skills (三省六部 multi-role engineering, M1-M18
+- **Not in this edition**: the other 9 system skills (三省六部 multi-role engineering, M1-M18
   selector, session discipline, QA/infra layers, error-memory, retro) depend on Hermes
   tooling (skill_manage, profiles, cron). On non-Hermes hosts their content is carried by
   `AGENTS.md`'s laws and red-lines instead.

@@ -864,7 +864,7 @@ Lua原子限流/XSS过滤/Prompt注入12模式/密码强度8位+大小写+数字
 - `references/alembic-async-sqlalchemy-setup.md` — **Alembic异步迁移指南**(同步驱动转换+SQLite batch模式+env.py模板, 某全栈项目 验证)
 
 - `references/greenfield-cli-project-pattern.md` — **Greenfield project** pattern: CLI+API+Dashboard+SQLite architecture, 7-sprint sequence, gate verification via subprocess (validated )
-- `references/engine-app-sprint-example.md` — Bid engine sprint delivery example
+> 实战样例源：本 skill `references/` 下的 cloud-* 模式库。
 - `references/redis-security-infrastructure.md` — Redis-backed限流/登录锁/JWT黑名单模式(某全栈项目 V2.3验证)
 - `references/fastapi-engine-pattern.md` — FastAPI multi-engine backend architecture
 
