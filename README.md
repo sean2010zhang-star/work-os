@@ -64,6 +64,41 @@ own gates. 27 red-team + golden E2E cases guard every rule (15 engine + 12 adapt
 | Self-evolution | yes — new skills save into the profile automatically | manual (edit skill files) |
 | Enforcement | protocol + **Gatekeeper CLI**: real hooks on Claude Code AND Hermes (shell-hook bridge, consent-gated) | protocol-disciplined (advisory) |
 
+## Watch it work (real transcript, not a mockup)
+
+Every line below is a real run of `gatekeeper` v0.2 in a scratch repo — the agent side
+cannot override any of it:
+
+```console
+$ gatekeeper init --host claude_code
+claude_code: WROTE .claude/settings.json - PreToolUse + Stop now hard-enforced
+
+$ gatekeeper route --complexity L4 --task-class "full build"
+routed: complexity=L4 role=developer class=full build
+L3+ requires PLAN approval by a HUMAN: write PLAN.md then run `gatekeeper approve PLAN.md` in a real terminal.
+
+# agent reaches for the keyboard BEFORE the human approves PLAN.md:
+$ gatekeeper pre --tool Write --command src/engine.py
+DENIED: [iron-1-plan-before-write] IRON LAW 1: complexity>=L3 and no approved plan. Emit the [路由] decision block, write PLAN.md, then ask the user to run `gatekeeper approve` (only a human TTY can set the flag).
+[exit 2]
+
+# and later, it tries to claim 'done' with a dirty tree:
+$ gatekeeper stop
+{"decision": "block", "reason": "[iron-3-clean-close] uncommitted changes: ?? .claude/; completion checklist missing: "}
+[exit 0  |  every block above is logged to append-only .gatekeeper/gate_log.jsonl]
+
+# nothing here could be opened by the agent itself:
+# (PLAN.md now exists — but approval still requires a human: no TTY, no signature)
+$ gatekeeper approve PLAN.md   (non-interactive, no signature file)
+approve refused: no interactive TTY and no .gatekeeper/user_signature file.
+PLAN approval is a human act — open a real terminal, or have the user place
+their signature: echo '<their word>' > .gatekeeper/user_signature
+[exit 1]
+```
+
+Four different iron laws, four different blocks, one append-only audit log — and the
+approval gate that *stays closed* to the agent but opens to you.
+
 ### Hermes Edition — one command
 
 ```bash
@@ -211,6 +246,39 @@ consent，人类批准一次即可）；Codex/Trae/WorkBuddy 接到各自最强�
 | 记忆闭环 | profile 内 `memory/` 预置；Agent 每任务先读、做完即更新 | 同样的 4 文件种子，通过项目 `memory/` 目录接入 |
 | 自进化 | 有 — 新 skill 自动存入 profile | 手动（编辑 skill 文件） |
 | 强制力 | 协议 + **Gatekeeper CLI**：Claude Code 与 Hermes 双宿主真实 hook（Hermes 走 shell-hook 桥，consent 一次） | 协议级约束（建议性） |
+
+## 看它真实运行（实录，非演示稿）
+
+以下每一行都是 `gatekeeper` v0.2 在临时仓库里的真实运行——Agent 端无法覆盖其中任何一步：
+
+```console
+$ gatekeeper init --host claude_code
+claude_code: WROTE .claude/settings.json - PreToolUse + Stop now hard-enforced
+
+$ gatekeeper route --complexity L4 --task-class "full build"
+routed: complexity=L4 role=developer class=full build
+L3+ requires PLAN approval by a HUMAN: write PLAN.md then run `gatekeeper approve PLAN.md` in a real terminal.
+
+# agent reaches for the keyboard BEFORE the human approves PLAN.md:
+$ gatekeeper pre --tool Write --command src/engine.py
+DENIED: [iron-1-plan-before-write] IRON LAW 1: complexity>=L3 and no approved plan. Emit the [路由] decision block, write PLAN.md, then ask the user to run `gatekeeper approve` (only a human TTY can set the flag).
+[exit 2]
+
+# and later, it tries to claim 'done' with a dirty tree:
+$ gatekeeper stop
+{"decision": "block", "reason": "[iron-3-clean-close] uncommitted changes: ?? .claude/; completion checklist missing: "}
+[exit 0  |  every block above is logged to append-only .gatekeeper/gate_log.jsonl]
+
+# nothing here could be opened by the agent itself:
+# (PLAN.md now exists — but approval still requires a human: no TTY, no signature)
+$ gatekeeper approve PLAN.md   (non-interactive, no signature file)
+approve refused: no interactive TTY and no .gatekeeper/user_signature file.
+PLAN approval is a human act — open a real terminal, or have the user place
+their signature: echo '<their word>' > .gatekeeper/user_signature
+[exit 1]
+```
+
+四条不同铁律、四次不同拦截、一份 append-only 审计日志——还有一个对 Agent 常闭、对你常开的批准闸门。
 
 ### Hermes Edition — 一条命令
 
