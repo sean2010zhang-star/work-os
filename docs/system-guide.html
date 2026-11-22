@@ -475,12 +475,12 @@
   </div>
   <div class="card">
     <span class="tag">核心性质：Agent 无法给自己开绿灯</span>
-    <p style="font-size:13.5px"><b>approve / override 只认人类</b>——真实 TTY 交互确认，或用户本人放置的签名文件；非交互调用一律拒绝并记入 append-only 审计。<code>gatekeeper doctor</code> 先跑负向自检（每条 deny 必须拦得住构造的违规才算数），13 条红队+金样例 E2E 守着引擎本身；<code>report</code> 统计规则触发频次，提示脚本化/降级/删除（规则新陈代谢）。</p>
+    <p style="font-size:13.5px"><b>approve / override 只认人类</b>——真实 TTY 交互确认，或用户本人放置的签名文件；非交互调用一律拒绝并记入 append-only 审计。<code>gatekeeper doctor</code> 先跑负向自检（每条 deny 必须拦得住构造的违规才算数），27 条红队+金样例 E2E（15 引擎 + 12 适配/协议）守着整个 harness；<code>report</code> 统计规则触发频次，提示脚本化/降级/删除（规则新陈代谢）。</p>
   </div>
 </div>
 <div class="card accent" style="margin-top:20px">
   <span class="tag">同一内核 · 六个插头（adapters.py）</span>
-  <pre>claude_code → .claude/settings.json 真实 hook（硬拦截+理由回灌）   hermes → SOUL 接线+cron 看门狗
+  <pre>claude_code → .claude/settings.json 真实 hook（硬拦截+理由回灌）   hermes → config.yaml hooks: 真实拦截（fail-closed）
 codex → AGENTS.md 命令块        trae → .trae/rules 项目规则
 workbuddy → 专家 SOP 注入        generic → 系统提示词粘贴
 # 六家共享同一 .gatekeeper/ 状态格式：一套大脑，六个适配器</pre>
