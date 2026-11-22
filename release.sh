@@ -40,7 +40,7 @@ say "manifests match $TAG"
 
 say "functional proof from inside the export"
 ( cd "$TMP/gatekeeper" && python3 test_gatekeeper.py >/tmp/gk-rel-1.log 2>&1 && python3 test_adapters.py >/tmp/gk-rel-2.log 2>&1 ) \
-  && say "gatekeeper suites: 13+12 green" || err "tests failed in export (see /tmp/gk-rel-*.log)"
+  && say "gatekeeper suites: 15+12 green" || err "tests failed in export (see /tmp/gk-rel-*.log)"
 
 say "packaging zip -> $OUT"
 ( cd "$TMP" && zip -qr "$OUT" . )
