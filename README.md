@@ -24,6 +24,22 @@ Documentation-only discipline keeps getting ignored by agents under pressure. So
 it as **installable software**: the rules arrive as the agent's own system prompt, its skill
 library, and a memory loop that gets sharper every week you use it.
 
+## Three layers, not three choices
+
+```
+SKILL    decides what the agent KNOWS        → 47 skills (knowledge, procedures, pitfalls)
+AGENT    decides HOW the agent thinks        → SOUL.md / AGENTS.md (routing, laws, memory loop)
+HARNESS  decides what it CANNOT SKIP         → gatekeeper/ (hooks that deny in code)
+```
+
+These stack, they don't compete. Layers 1–2 were always shippable as text; **layer 3 is why
+discipline survives pressure**. [`gatekeeper/`](gatekeeper/) is a single-file stdlib Python
+CLI that installs real PreToolUse/Stop hooks (Claude Code: hard deny with the violated law
+fed back to the model; Hermes/Codex/Trae/WorkBuddy: strongest enforcement each host exposes,
+same kernel + same `.gatekeeper/` state — one brain, six connectors). Its core property:
+**`approve`/`override` are human-only** (TTY or signature file) — an agent cannot open its
+own gates. 13 red-team + golden E2E cases guard every rule.
+
 ## What's inside
 
 | Component | What it does |
@@ -33,6 +49,7 @@ library, and a memory loop that gets sharper every week you use it.
 | **10 strong recommendations** | Skippable only with a stated reason (read-only auditors, verify-then-change, single-source numbers…) |
 | **Quality red-lines** | Fixture honesty, exception-vs-fetch failure distinction, secret-path denylists, git-history anchoring… |
 | **48 skills** (Hermes) | Routing, methodology, iron laws, Sprint/Gate tiers, plan templates, delivery-audit checklists, git versioning, cross-project pitfalls, **long-run campaign protocol** (Mission Contract + checkpoints + budget fuse), plus 30 curated external skills (superpowers dev suite, GitHub ops, document tooling, research) |
+| **`gatekeeper/`** | The harness layer: single-file CLI + 6 host adapters; deny rules = iron laws in code; human-only approve; 13 red+golden E2E cases |
 | `memory/` | Seed structure for the memory-feedback loop (index / preferences / workflow-lessons / decisions / projects) + **mandatory first-run interview** that fills your preferences file |
 
 ## Two editions — pick by your host
@@ -151,6 +168,21 @@ Agent 的失败模式是普适且昂贵的：
 纯文档纪律在压力下总被 Agent 无视——所以我们把它打包成**可安装的软件**：规则直接进入
 Agent 的系统提示词、技能库，以及一套每周都在变锋利的记忆反馈闭环。
 
+## 三层叠加，不是三选一
+
+```
+SKILL   决定 Agent「知道什么」  → 48 skill（知识、流程、陷阱库）
+AGENT   决定 Agent「怎么想」    → SOUL.md / AGENTS.md（路由、铁律、记忆闭环）
+HARNESS 决定「能不能跳过」      → gatekeeper/（代码级拦截钩子）
+```
+
+三层是叠加关系，不是选型关系。前两层可以靠文本交付，**第三层才是纪律扛住压力的原因**。
+[`gatekeeper/`](gatekeeper/) 是单文件零依赖 Python CLI：Claude Code 上写真实
+PreToolUse/Stop hook（硬 deny + 把违反的铁律原文回灌给模型）；Hermes/Codex/Trae/WorkBuddy
+各接到该宿主能给出的最强形态——同一内核、同一 `.gatekeeper/` 状态格式，一套大脑六个插头。
+核心性质：**`approve`/`override` 只认人类**（TTY 或签名文件），Agent 无法给自己开绿灯。
+13 条红队+金样例 E2E 守着每一条规则。
+
 ## 系统包含什么
 
 | 组件 | 作用 |
@@ -160,6 +192,7 @@ Agent 的系统提示词、技能库，以及一套每周都在变锋利的记�
 | **10 条强烈建议** | 只能说明理由后跳过（审计代理只读 · 先验证再修改 · 数字单一来源…） |
 | **质量红线** | 夹具诚实、异常与取数失败区分、敏感路径黑名单、git 历史锚定… |
 | **48 个 skill**（Hermes 版） | 路由、方法论、铁律全文、Sprint/Gate 分级、方案模板、交付审计清单、git 版本管理、跨项目陷阱库、**长程战役协议**（Mission Contract + 断点检查点 + 预算熔断），另含 30 个精选外部 skill（superpowers 开发套件、GitHub 运维、文档工具、研究工具） |
+| **`gatekeeper/`** | 第三层 harness：单文件 CLI + 6 宿主适配器；deny 规则=铁律的代码形态；approve 只认人类；13 条红队+金样例 E2E |
 | `memory/` | 记忆反馈闭环的种子结构（索引/偏好/工作流教训/决策记录/项目档案）+ **首次运行强制采访**引导你填好偏好文件 |
 
 ## 两个版本 — 按你的宿主选择
@@ -232,9 +265,11 @@ git 写拦截闸），见 `profile/skills/longrun-campaign/scripts/`，非 Herme
 
 - **v1.5.x（当前）** — 纪律包本体：协议 + 47 skill + 记忆种子 + 首跑采访 + 战役协议。
   Hermes / Claude Code / Codex 三宿主适配。
-- **v1.6+** — **Gatekeeper**：战役 V3.4 已内置 gitguard（git 写拦截闸）+ 机检武器库作为
-  协议级执法；下一步是薄 CLI 借各宿主 hook 系统做 OS 级强制（PreToolUse 拦截、Stop 钩子
-  完成度检查）。设计稿 `docs/gatekeeper-design.md`。
+- **v1.6（现在）** — **Gatekeeper v0.1 已落地**：`gatekeeper/gatekeeper.py`——harness 层
+  成为可运行 CLI，6 宿主适配器（`adapters.py`），deny/ack/warn 三级强度对应三级铁律体系，
+  人类专属 approve，规则新陈代谢 report，红队+金样例测试套件。设计稿转为实现注记。
+- **v1.7+** — Hermes 插件原生暴露 hook 总线；dsh 过 rc 期后加适配；OS/沙箱级强制在
+  limits 里诚实评估，不虚标。
 - **v2.0** — Agent 专家平台的专家人设封装（岗位说明书 + SOP + 知识库）。
 
 ## 理念

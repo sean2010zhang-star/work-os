@@ -1,6 +1,6 @@
 # Gatekeeper — 最小纪律 Harness 立项设计文档
 
-状态：设计稿 v0.9（待评审）｜作者：work-os｜日期：2026-11-20
+状态：**v0.1 已实现** → `gatekeeper/`（本文件转为实现注记；差异见其 README）｜作者：work-os｜日期：2026-11-20
 一句话：**不造 agent 引擎，造纪律闸门**——一个薄壳 CLI，用现有宿主（Claude Code / Codex / dsh headless）的 hook 机制，把 work-os 的铁律与 Gate 从"文档建议"变成"代码拦截"。
 
 ---

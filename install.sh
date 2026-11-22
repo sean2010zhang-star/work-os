@@ -147,7 +147,13 @@ if [ "$DRY" = 0 ]; then
     echo "$OUT" | sed 's/^/    /'
   fi
   run "$HERMES_BIN" profile use work-os 2>/dev/null && say "work-os is now your default profile. Switch back: hermes profile use default" || say "Activate with: hermes profile use work-os  (or hermes -p work-os)"
-  # ── 8. first-run onboarding: preference interview (L3 cold-start fix) ──
+  # ── 7b. optional harness (layer 3) ───────────────────────────
+if [ -f "$DIR/gatekeeper/gatekeeper.py" ]; then
+  say "Harness layer available (layer 3): python3 $DIR/gatekeeper/gatekeeper.py init --host <host>  # inside any project"
+  say "  Claude Code hooks enforce iron laws in code; run its 'doctor' self-test first."
+fi
+
+# ── 8. first-run onboarding: preference interview (L3 cold-start fix) ──
   # SOUL.md hard rule: empty 偏好.md template → agent auto-interviews at first turn.
   if [ -t 0 ]; then
     say "Launching interactive Work OS session — it will detect the empty 偏好.md and"
