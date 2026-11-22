@@ -4,7 +4,7 @@ Portable protocol pack for **any agent host**: Claude Code, Codex CLI, Cursor, W
 Cline, Copilot, dsh, OpenCode, or anything that reads a system prompt.
 
 > If the host is **Hermes**, don't use this edition — go to the repo root and run
-> `./install.sh` (Hermes Edition = full system: SOUL protocol + 47 skills + memory loop +
+> `./install.sh` (Hermes Edition = full system: SOUL protocol + 48 skills + memory loop +
 > first-run interview + installer verification).
 
 ## What you get here
@@ -12,7 +12,7 @@ Cline, Copilot, dsh, OpenCode, or anything that reads a system prompt.
 | Piece | File(s) | Effect |
 |-------|---------|--------|
 | The protocol | repo-root `AGENTS.md` | Routing decision on every task, 5 iron laws, 10 recommendations, quality red-lines, closing checklist, memory protocol |
-| 8 portable skills | `skills/*/SKILL.md` | router details, methodology overview, iron laws full text, Sprint×Gate tiers, plan-confirm templates, delivery-audit checklists, git versioning, cross-project pitfalls |
+| 9 portable skills | `skills/*/SKILL.md` | router details, methodology overview, iron laws full text, Sprint×Gate tiers, plan-confirm templates, delivery-audit checklists, git versioning, cross-project pitfalls, protocol benchmarking |
 | Memory seed | repo-root `memory/` | `_INDEX` + preferences/workflow/decision templates — the feedback loop, file-based, host-agnostic |
 
 ## Install (30 seconds, by host)

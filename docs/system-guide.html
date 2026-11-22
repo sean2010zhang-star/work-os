@@ -86,7 +86,7 @@
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Work OS · System Guide · v1.5</div>
+  <div class="eyebrow">Work OS · System Guide · v1.6</div>
   <h1>AI Agent 执行纪律体系 —<br>工作体系全景与处理流程图</h1>
   <p class="lede">
     本文档回答一个问题：<strong>装上 Work OS 之后，你的 Agent 到底会怎样工作？</strong>
@@ -138,7 +138,7 @@
 <div class="stack">
   <div class="layer focal"><span class="ln">协议层 PROTOCOL</span><span class="le">SOUL.md / AGENTS.md</span><span class="ld">路由决策 · 5 铁律 · 10 建议 · 质量红线 · 收尾清单 — 作为系统提示词每次注入，无法绕过</span></div>
   <div class="layer"><span class="ln">决策层 ROUTING</span><span class="le">work-os-router</span><span class="ld">任务 → 分类 / 复杂度 L1-L4 / 模式 M1-M18 / Sprint 级 / Gate 级 / 记忆状态，≤5 行输出，先于一切动作</span></div>
-  <div class="layer"><span class="ln">方法层 METHODS</span><span class="le">47 skills</span><span class="ld">17 系统 skill（方法论/审计/战役协议/版本管理…）+ 30 精选外部 skill（开发套件/GitHub/文档/研究）</span></div>
+  <div class="layer"><span class="ln">方法层 METHODS</span><span class="le">48 skills</span><span class="ld">18 系统 skill（方法论/审计/战役协议/版本管理…）+ 30 精选外部 skill（开发套件/GitHub/文档/研究）</span></div>
   <div class="layer"><span class="ln">质量层 QUALITY</span><span class="le">Gate 0–5</span><span class="ld">Pre-flight → Revision → Integration → 独立终审 → 用户价值门；FAIL 3 次强制上报</span></div>
   <div class="layer"><span class="ln">记忆层 MEMORY</span><span class="le">memory/ 四件套</span><span class="ld">_INDEX · 偏好 · 工作流规范 · 项目档案 — 每任务先读，做完回灌，教训写进对应 skill</span></div>
 </div>
@@ -378,59 +378,85 @@
 </div>
 
 <!-- ═══════════════ 6. Campaign ═══════════════ -->
-<h2>06 · 长程自主战役协议 <span class="en">Campaign edition — long unattended runs</span></h2>
-<p class="sub">场景：用户说"全量开发、不用等我确认、测试审计通过后自动进下一阶段，直到全部完成"。战役协议把这句话变成有边界、可恢复、可审计的闭环，而不是无限自主承诺。关键调和：<b>确认前置</b>——Mission Contract 签署就是那次"方案确认"。</p>
+<h2>06 · 长程自主战役协议 V3.4 <span class="en">Campaign edition — long unattended runs</span></h2>
+<p class="sub">场景：用户说"全量开发、不用等我确认、测试审计通过后自动进下一阶段，直到全部完成"。战役协议把这句话变成有边界、可恢复、可审计的闭环，而不是无限自主承诺。关键调和：<b>确认前置</b>——Mission Contract 签署就是那次"方案确认"。V3.4 的标志变化：<b>能静态判定的规矩一律下沉为机检脚本</b>，文字叮嘱升级为 fail-closed 闸门。</p>
 <div class="figure">
-<svg viewBox="0 0 1240 264" role="img" aria-labelledby="camp-title camp-desc" xmlns="http://www.w3.org/2000/svg">
-  <title id="camp-title">长程战役协议五阶段流程图</title>
-  <desc id="camp-desc">Mission Contract 签署冻结后，独立评审代理执行 Gate 0 材料完备性评审，通过后进入 Sprint 自动推进循环，全程由检查点三件套与预算熔断守护，五类中断条件触发即停上报，最终以 Gate 5 用户价值门收束。</desc>
+<svg viewBox="0 0 1240 424" role="img" aria-labelledby="camp-title camp-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="camp-title">长程战役协议 V3.4 流程图（五阶段 + 重量门 + 机检武器库）</title>
+  <desc id="camp-desc">Mission Contract 冻结后经 Gate 0 材料评审进入 Sprint 自动推进循环，每个 Sprint 先过 L1/L2/L3 重量门，八个确定性机检脚本接入各 Gate 步骤做技术执法，全程由断点三件套、心跳看门狗与预算熔断守护，五类中断条件触发即停上报，最终以 Gate 5 用户价值门收束。</desc>
   <g fill="none" stroke="#4f5d75" stroke-width="1">
     <path d="M232,100 L264,100" marker-end="url(#arrow)"/>
     <path d="M476,100 L508,100" marker-end="url(#arrow)"/>
     <path d="M720,100 L752,100" marker-end="url(#arrow)"/>
     <path d="M964,100 L996,100" marker-end="url(#arrow)"/>
     <path d="M1096,136 L1096,180 L640,180 L640,136" marker-end="url(#arrow-accent)" stroke="#bf4520" stroke-dasharray="5,4"/>
+    <path d="M614,196 L614,228" marker-end="url(#arrow-accent)" stroke="#bf4520"/>
   </g>
   <g font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".06em" fill="#4f5d75" text-anchor="middle">
     <rect x="828" y="172" width="88" height="10" fill="#fff"/>
     <text x="872" y="180">5 类中断 → 停等拍板</text>
     <rect x="648" y="152" width="48" height="10" fill="#fff"/>
     <text x="672" y="160" fill="#bf4520">RESUME</text>
+    <rect x="628" y="204" width="72" height="10" fill="#fff"/>
+    <text x="664" y="212" fill="#bf4520">每步机检执法</text>
   </g>
   <g text-anchor="middle">
     <rect x="24" y="52" width="208" height="96" rx="6" fill="rgba(191,69,32,0.08)" stroke="#bf4520" stroke-width="1.2"/>
     <text x="128" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#bf4520">PHASE 0</text>
-    <text x="128" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">Mission Contract</text>
-    <text x="128" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">目标/分期/预授权/预算熔断/</text>
-    <text x="128" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">验收定义 — 用户确认后冻结</text>
+    <text x="128" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">Mission Contract（10 节）</text>
+    <text x="128" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">+约束证据 checklist · 不可逆明文枚举</text>
+    <text x="128" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">角色偏好表 · 决策位开关</text>
 
     <rect x="264" y="52" width="212" height="96" rx="6" fill="#fff" stroke="#2d3142" stroke-width="1"/>
     <text x="370" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#4f5d75">PHASE 0.5</text>
     <text x="370" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">Gate 0 材料评审</text>
-    <text x="370" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">独立 team agent 只读三维评审：</text>
-    <text x="370" y="128" font-family="'Geist Mono',monospace" font-size="8.5" fill="#5a6580">COMPLETE · RELIABLE · FEASIBLE</text>
+    <text x="370" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">独立只读 · §9 命令实测可跑</text>
+    <text x="370" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">开工前提：git 化 + 备份目标可用</text>
 
-    <rect x="508" y="52" width="212" height="96" rx="6" fill="#fff" stroke="#2d3142" stroke-width="1"/>
-    <text x="614" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#4f5d75">PHASE 1..N</text>
+    <rect x="508" y="52" width="212" height="96" rx="6" fill="rgba(191,69,32,0.08)" stroke="#bf4520" stroke-width="1.2"/>
+    <text x="614" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#bf4520">PHASE 1..N</text>
     <text x="614" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">Sprint 自动推进循环</text>
-    <text x="614" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">开发→G1-4→tag→自动下一个</text>
-    <text x="614" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">测试套件累积不清零，防回归</text>
+    <text x="614" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">先过重量门：L1 直达(跳G4)</text>
+    <text x="614" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">L2 标准 G1-4 · L3 里程碑全套</text>
 
     <rect x="752" y="52" width="212" height="96" rx="6" fill="#fff" stroke="#2d3142" stroke-width="1"/>
     <text x="858" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#4f5d75">ALWAYS-ON</text>
     <text x="858" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">守护件</text>
-    <text x="858" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">断点三件套 CONTRACT/mission</text>
-    <text x="858" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">.json/STATUS + token 预算熔断</text>
+    <text x="858" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">断点三件套 + 仓外副本</text>
+    <text x="858" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">心跳看门狗(cron) · 三轴预算</text>
 
     <rect x="996" y="52" width="208" height="96" rx="6" fill="rgba(191,69,32,0.08)" stroke="#bf4520" stroke-width="1.2"/>
     <text x="1100" y="72" font-family="'Geist Mono',monospace" font-size="7.5" letter-spacing=".14em" fill="#bf4520">TERMINAL GATE</text>
     <text x="1100" y="94" font-family="'Geist','Noto Sans SC',sans-serif" font-size="13.5" font-weight="600" fill="#2d3142">Gate 5 用户价值门</text>
-    <text x="1100" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">对照 Contract §6 逐项验证</text>
-    <text x="1100" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11" fill="#4f5d75">通过才允许声明"战役完成"</text>
+    <text x="1100" y="112" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">对照 §6 checklist 逐项 ✅⚠️❌</text>
+    <text x="1100" y="128" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#4f5d75">无证据条目 = 未验收</text>
   </g>
-  <text x="640" y="232" text-anchor="middle" font-family="'Geist','Noto Sans SC',sans-serif" font-size="11.5" fill="#5a6580">中断上报 5 条：同 Gate 3 连 FAIL · 预算触顶 · 范围膨胀 · 不可逆操作（删数据/发布/花钱） · 破坏性回归 ——"不用等确认" ≠ 无边界自主</text>
+
+  <rect x="24" y="228" width="1180" height="116" rx="8" fill="none" stroke="#bf4520" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="614" y="246" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="8" letter-spacing=".14em" fill="#bf4520">机检武器库 scripts/ — 文字规矩 → 确定性脚本（V3.4 全部实测）</text>
+  <g font-family="'Geist','Noto Sans SC',sans-serif" text-anchor="middle">
+    <rect x="40" y="256" width="276" height="48" rx="4" fill="#fff" stroke="#2d3142" stroke-width="0.8"/>
+    <text x="178" y="274" font-size="11.5" font-weight="600" fill="#2d3142">scope_check · cursor_check</text>
+    <text x="178" y="290" font-size="9.5" fill="#4f5d75">范围漂移/reflog/孤儿tag · 六不变量防游标错乱</text>
+    <rect x="332" y="256" width="276" height="48" rx="4" fill="#fff" stroke="#2d3142" stroke-width="0.8"/>
+    <text x="470" y="274" font-size="11.5" font-weight="600" fill="#2d3142">gate_recorder · heartbeat_check</text>
+    <text x="470" y="290" font-size="9.5" fill="#4f5d75">退出码直取+负向自检 · mtime+ts 双证据看门狗</text>
+    <rect x="624" y="256" width="276" height="48" rx="4" fill="#fff" stroke="#2d3142" stroke-width="0.8"/>
+    <text x="762" y="274" font-size="11.5" font-weight="600" fill="#2d3142">fixture_check · value_check</text>
+    <text x="762" y="290" font-size="9.5" fill="#4f5d75">假测试 AST 扫描 · 手抄打码值/硬编码指纹</text>
+    <rect x="916" y="256" width="276" height="48" rx="4" fill="#fff" stroke="#2d3142" stroke-width="0.8"/>
+    <text x="1054" y="274" font-size="11.5" font-weight="600" fill="#2d3142">arch_check · gitguard</text>
+    <text x="1054" y="290" font-size="9.5" fill="#4f5d75">解耦跨模块 import 机检 · git 写动词拦截闸</text>
+  </g>
+  <g font-family="'Geist','Noto Sans SC',sans-serif" font-size="10" fill="#5a6580" text-anchor="middle">
+    <rect x="40" y="310" width="1152" height="24" rx="4" fill="rgba(191,69,32,0.05)" stroke="rgba(191,69,32,0.5)" stroke-width="0.8" stroke-dasharray="3,3"/>
+    <text x="616" y="326">接入点写死在流程里：Gate 2 首步 scope_check · 新增测试必扫 fixture_check · 门禁统一 gate_recorder · 派发契约第5要素 = gitguard · 恢复第二动作 cursor_check</text>
+  </g>
+  <text x="614" y="372" text-anchor="middle" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#5a6580">缺陷处置协议：先复现再动 → 找根因(值来源纪律) → 修在源头 → 个例 or 普遍 → 防再犯(优先脚本化) → 止损(两路独立会诊)</text>
+  <text x="614" y="400" text-anchor="middle" font-family="'Geist','Noto Sans SC',sans-serif" font-size="10.5" fill="#5a6580">中断上报 5 条：同 Gate 3 连 FAIL · 预算触顶(含步骤超时) · 范围膨胀(scope_check 两轮越界) · 不可逆操作明文枚举 · 破坏性回归 —— "不用等确认" ≠ 无边界自主</text>
 </svg>
 </div>
+<p class="note">该协议的迭代靠对抗评测驱动（见 <code>profile/skills/protocol-doc-benchmarking/</code>）：真实事故改编的迷宫题 + 预先写死的中立判据 + 每轮全新 Runner 复跑——对称题曾给融合版 97.5/100，同一文档换真实事故题仅 66，这个偏置教训本身就是方法论的第一条。</p>
 
 <!-- ═══════════════ 7. 记忆闭环 ═══════════════ -->
 <h2>07 · 记忆闭环 <span class="en">The memory feedback loop</span></h2>
@@ -451,7 +477,7 @@
     <span class="tag">Hermes Edition（完整体系）</span>
     <pre>git clone https://github.com/sean2010zhang-star/work-os
 cd work-os && ./install.sh   # --dry-run / --uninstall</pre>
-    <p style="font-size:13px;color:var(--muted)">隔离 profile · SOUL 协议 · 47 skill · 记忆种子+强制首跑采访 · 复制你自己的模型配置（仓库永不携带 key） · 自动验证路由块输出</p>
+    <p style="font-size:13px;color:var(--muted)">隔离 profile · SOUL 协议 · 48 skill · 记忆种子+强制首跑采访 · 复制你自己的模型配置（仓库永不携带 key） · 自动验证路由块输出</p>
   </div>
   <div class="card">
     <span class="tag">Universal Edition（任意宿主）</span>
@@ -470,7 +496,7 @@ codex plugin marketplace add sean2010zhang-star/work-os
 </div>
 
 <div class="foot">
-  <span>Work OS v1.5 · Execution Discipline for AI Agents · MIT</span>
+  <span>Work OS v1.6 · Execution Discipline for AI Agents · MIT</span>
   <span>github.com/sean2010zhang-star/work-os · docs/effectiveness.md 查看诚实效果分层</span>
 </div>
 </div>

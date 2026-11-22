@@ -100,7 +100,7 @@ tags: [error, memory, learning, resilience, auto-fix]
 | SKILL.md | ✅ | ~/.hermes/skills/foundation/error-auto-memory/ |
 | MEMORY注入 | ✅ | 每次turn自动加载经验库查询规则 |
 | 扫描脚本 | ✅ | ~/.hermes/scripts/error_memory_scan.py |
-| Cron job | ✅ | error-memory-scan (每6小时, job_id: 09d5c03e4955) |
+| Cron job | ✅ | error-memory-scan (每6小时, job_id: see local cron list) |
 | 经验库文件 | 运行时创建 | ~/.hermes/error-memory.jsonl |
 
 ## 脚本说明: error_memory_scan.py
@@ -126,7 +126,7 @@ tags: [error, memory, learning, resilience, auto-fix]
 |------|------|------|
 | SKILL.md | ✅ 已创建 | ~/.hermes/skills/foundation/error-auto-memory/ |
 | 扫描脚本 | ✅ 已创建 | ~/.hermes/scripts/error_memory_scan.py |
-| Cron job | ✅ 运行中 | error-memory-scan (每6小时, job_id: 09d5c03e4955) |
+| Cron job | ✅ 运行中 | error-memory-scan (每6小时, job_id: see local cron list) |
 | 经验库 | ⚠️ 首次扫描时自动创建 | ~/.hermes/error-memory.jsonl |
 | MEMORY规则 | ✅ 已注入 | 每次对话自动加载经验库查询规则 |
 

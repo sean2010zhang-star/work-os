@@ -110,7 +110,7 @@ MAJOR.MINOR.PATCH
 | 3 | <vault> | 更新 ~/Desktop/<vault>/wiki/projects/*.md | 项目状态文件 |
 | 4 | session-log | 写入 ~/Desktop/session-log/session_YYYYMMDD_*.md | 会话记录 |
 
-自动化: cron job每日22:00执行 `backup_all.py`（job_id: fd6ddf36c9a9）
+自动化: cron job每日22:00执行 `backup_all.py`（job_id 见本机 cron 列表）
 手动执行: `python3 ~/.hermes/scripts/backup_all.py`
 
 ## WHEN 触发条件

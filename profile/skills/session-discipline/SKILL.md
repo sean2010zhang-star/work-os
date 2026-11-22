@@ -111,8 +111,8 @@ API key、配置详情等易变信息存skill的references/或脚本内。
 
 
 ### Cron Jobs
-- 每日22:00 backup_all.py (job_id: fd6ddf36c9a9)
-- 每日08:00 health_check.py (job_id: 1573b340d53d)
+- 每日22:00 backup_all.py (job_id: see local cron list)
+- 每日08:00 health_check.py (job_id: see local cron list)
 
 
 **外存rsync注意事项**

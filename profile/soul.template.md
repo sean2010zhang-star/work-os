@@ -67,8 +67,8 @@
 
 ## Skills 目录（17 个，按需加载）
 
-体系核心：work-os-router（入口）/ hermes-methodology-overview（5+1层全貌）/ consolidated-iron-laws（铁律全集）/ work-mode-selector（M1-M18 详表）/ sprint-with-tiers（Sprint三级+Gate）/ plan-confirm-execute（PLAN 模板）/ sansheng-liubu-workflow（L4 大型工程分角色）/ delivery-audit（审计清单）/ project-git-version（版本管理）/ session-discipline（收尾纪律）/ common-pitfalls（陷阱库）/ error-auto-memory（错误自动记忆）/ quality-assurance-layer / infrastructure-layer / delivery-retrospective（复盘）/ sprint-gated-delivery（Sprint+Gate 连续交付引擎）/ longrun-campaign（长程自主战役：Mission Contract + Gate 0 材料评审 + 断点恢复 + 预算熔断 + 5 条中断上报）。
+体系核心：work-os-router（入口）/ hermes-methodology-overview（5+1层全貌）/ consolidated-iron-laws（铁律全集）/ work-mode-selector（M1-M18 详表）/ sprint-with-tiers（Sprint三级+Gate）/ plan-confirm-execute（PLAN 模板）/ sansheng-liubu-workflow（L4 大型工程分角色）/ delivery-audit（审计清单）/ project-git-version（版本管理）/ session-discipline（收尾纪律）/ common-pitfalls（陷阱库）/ error-auto-memory（错误自动记忆）/ quality-assurance-layer / infrastructure-layer / delivery-retrospective（复盘）/ sprint-gated-delivery（Sprint+Gate 连续交付引擎）/ longrun-campaign（V3.4：Mission Contract+重量门+机检武器库）（长程自主战役：Mission Contract + Gate 0 材料评审 + 断点恢复 + 预算熔断 + 5 条中断上报）。
 
-长程战役任务（用户授权'自行执行直到全部完成'类）→ 必须先加载 `longrun-campaign`，产出 Mission Contract 等用户签署后才开工。
+长程战役任务（用户授权'自行执行直到全部完成'类）→ 必须先加载 `longrun-campaign（V3.4：Mission Contract+重量门+机检武器库）`，产出 Mission Contract 等用户签署后才开工。
 
 任务判型后优先加载对应 skill；新技能用 skill_manage 沉淀到本 profile 的 skills/ 目录——**你的 skill 库随使用增长，这是体系自我进化的通道**。

@@ -1,15 +1,13 @@
 {
-  "campaign_id": "<slug>",
-  "contract_version": "1.0",
-  "cursor": { "phase": 1, "sprint": 1, "state": "gate0-review | executing | gate-N | blocked | done" },
-  "gates": {
-    "gate0_material_review": { "result": "PENDING", "evidence": "", "reviewer": "independent-agent" },
-    "sprint_history": []
-  },
-  "budget": { "token_cap": 0, "token_spent": 0, "sprint_cap": 0, "sprints_used": 0, "wallclock_deadline": "" },
-  "constraints_status": { "C1": "unchecked", "C2": "unchecked" },
-  "open_items": [],
-  "interrupt_log": [],
-  "last_checkpoint_at": "",
-  "next_action": "（断点恢复时从这里继续）"
+  "campaign_id": "<id>",
+  "phase_cursor": {"phase": 1, "sprint": 1},
+  "planned_sprints": 0,
+  "gates": [],
+  "budget": {"tokens_used": 0, "token_cap": null, "sprints_used": 0, "sprint_cap": null, "wallclock_started": null},
+  "worktrees": [],
+  "subagent_sessions": {},
+  "heartbeat_path": "campaign/<id>/heartbeats/",
+  "open_issues": [],
+  "next_action": "",
+  "authority_note": "本文件为机器态唯一权威；与 STATUS.md 冲突以本文件+gate_log 为准"
 }

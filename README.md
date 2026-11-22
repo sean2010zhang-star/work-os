@@ -32,7 +32,7 @@ library, and a memory loop that gets sharper every week you use it.
 | **5 iron laws** | Violation = delivery failure (plan confirmation for L3+ · real wiring, no mock-as-done · no skipped backups · no skipped gates · no "done" claim under 80% verified) |
 | **10 strong recommendations** | Skippable only with a stated reason (read-only auditors, verify-then-change, single-source numbers…) |
 | **Quality red-lines** | Fixture honesty, exception-vs-fetch failure distinction, secret-path denylists, git-history anchoring… |
-| **47 skills** (Hermes) | Routing, methodology, iron laws, Sprint/Gate tiers, plan templates, delivery-audit checklists, git versioning, cross-project pitfalls, **long-run campaign protocol** (Mission Contract + checkpoints + budget fuse), plus 30 curated external skills (superpowers dev suite, GitHub ops, document tooling, research) |
+| **48 skills** (Hermes) | Routing, methodology, iron laws, Sprint/Gate tiers, plan templates, delivery-audit checklists, git versioning, cross-project pitfalls, **long-run campaign protocol** (Mission Contract + checkpoints + budget fuse), plus 30 curated external skills (superpowers dev suite, GitHub ops, document tooling, research) |
 | `memory/` | Seed structure for the memory-feedback loop (index / preferences / workflow-lessons / decisions / projects) + **mandatory first-run interview** that fills your preferences file |
 
 ## Two editions — pick by your host
@@ -42,7 +42,7 @@ library, and a memory loop that gets sharper every week you use it.
 | For | anyone running [Hermes Agent](https://github.com/NousResearch/hermes-agent) | Claude Code, Codex CLI, Cursor, Windsurf, Cline, Copilot, dsh, OpenCode… |
 | Install | `./install.sh` (one command) | marketplace add, or copy `AGENTS.md` |
 | Protocol | full system prompt (SOUL.md: routing + laws + red-lines + memory protocol) | `AGENTS.md` (same laws, same loop) |
-| Skills | **17 system + 30 curated external** = 47 (incl. autonomous-battle campaign protocol) | **8** portable + campaign mapping (`docs/campaign-universal.md`) |
+| Skills | **18 system + 30 curated external** = 48 (incl. **V3.4 campaign protocol** with 8 machine-check scripts) | **8** portable + campaign mapping (`docs/campaign-universal.md`) |
 | Memory loop | profile `memory/` seeded; agent reads each task, updates after — full feedback loop | same 4-file seed, wired via `memory/` dir in your project |
 | Self-evolution | yes — new skills save into the profile automatically | manual (edit skill files) |
 | Enforcement | protocol-disciplined (advisory) | protocol-disciplined; hard hook-blocking = Gatekeeper roadmap |
@@ -56,7 +56,7 @@ git clone https://github.com/sean2010zhang-star/work-os && cd work-os && ./insta
 
 1. Detects Hermes (otherwise prints how to get it + the Universal path for your host)
 2. Creates an **isolated profile** `work-os` — your existing setup untouched, one command back
-3. Installs SOUL.md (full protocol as system prompt) + 17 system skills + 30 curated external skills
+3. Installs SOUL.md (full protocol as system prompt) + 18 system skills + 30 curated external skills
 4. Seeds `memory/` (never overwrites yours) — first session auto-interviews you to fill preferences
 5. Copies **your own** model/provider block from your config (no keys ship in this repo, ever)
 6. Checks optional deps (`git`/`node`/`rsync` → which gates/backup layers unlock)
@@ -83,9 +83,22 @@ task arrives
   → [CLOSE]     commit+tag · verify completion per-item · 4-layer backup · lessons → memory/skills
 ```
 
-For long unattended runs, the **Campaign Edition** protocol adds a signed Mission Contract,
-crash-restart checkpoints, regression accumulators, and a token budget fuse —
-`profile/skills/longrun-campaign/`, mapping for non-Hermes hosts in `docs/campaign-universal.md`.
+For long unattended runs, the **Campaign Edition** protocol (V3.4) adds a 10-section signed
+Mission Contract, a Gate 0 material review, L1/L2/L3 sprint weight-gating, crash-restart
+checkpoints, a token/wall-clock budget fuse — and an **arsenal of 8 deterministic
+machine-check scripts** (`scope_check` / `gate_recorder` with negative self-test /
+`cursor_check` / `fixture_check` AST scanner / `value_check` / `heartbeat_check` watchdog /
+`arch_check` / `gitguard` write-blocker) that turn the rules from prose into gates that
+fail closed. See `profile/skills/longrun-campaign/scripts/`, mapping for non-Hermes hosts
+in `docs/campaign-universal.md`.
+
+## Protocols you can measure, not just trust
+
+The campaign protocol was iterated through adversarial benchmarking: real incident-derived
+maze questions, neutral pre-written rubrics, fresh runners each round (symmetric questions
+scored a fused doc 97.5/100; the *same* doc on real-incident questions scored 66 — the bias
+lesson is documented). Method: `profile/skills/protocol-doc-benchmarking/` (with a 10-incident
+question bank you can reuse to grade any process doc).
 
 ## Does it actually work like the author's setup?
 
@@ -146,7 +159,7 @@ Agent 的系统提示词、技能库，以及一套每周都在变锋利的记�
 | **5 条铁律** | 违反 = 交付失败（L3+ 必须先确认方案 · 真实前后端联调，禁 mock 冒充 · 禁跳备份 · 禁跳 Gate · 验证不足 80% 禁称"完成"） |
 | **10 条强烈建议** | 只能说明理由后跳过（审计代理只读 · 先验证再修改 · 数字单一来源…） |
 | **质量红线** | 夹具诚实、异常与取数失败区分、敏感路径黑名单、git 历史锚定… |
-| **47 个 skill**（Hermes 版） | 路由、方法论、铁律全文、Sprint/Gate 分级、方案模板、交付审计清单、git 版本管理、跨项目陷阱库、**长程战役协议**（Mission Contract + 断点检查点 + 预算熔断），另含 30 个精选外部 skill（superpowers 开发套件、GitHub 运维、文档工具、研究工具） |
+| **48 个 skill**（Hermes 版） | 路由、方法论、铁律全文、Sprint/Gate 分级、方案模板、交付审计清单、git 版本管理、跨项目陷阱库、**长程战役协议**（Mission Contract + 断点检查点 + 预算熔断），另含 30 个精选外部 skill（superpowers 开发套件、GitHub 运维、文档工具、研究工具） |
 | `memory/` | 记忆反馈闭环的种子结构（索引/偏好/工作流教训/决策记录/项目档案）+ **首次运行强制采访**引导你填好偏好文件 |
 
 ## 两个版本 — 按你的宿主选择
@@ -156,7 +169,7 @@ Agent 的系统提示词、技能库，以及一套每周都在变锋利的记�
 | 适合 | 使用 [Hermes Agent](https://github.com/NousResearch/hermes-agent) 的人 | Claude Code、Codex CLI、Cursor、Windsurf、Cline、Copilot、dsh、OpenCode… |
 | 安装 | `./install.sh`（一条命令） | marketplace 添加，或直接拷 `AGENTS.md` |
 | 协议 | 完整系统提示词（SOUL.md：路由+铁律+红线+记忆协议） | `AGENTS.md`（同样的法则、同样的闭环） |
-| Skill | **17 系统 + 30 精选外部** = 47（含自主战役协议） | **8** 个可移植 + 战役协议映射（`docs/campaign-universal.md`） |
+| Skill | **18 系统 + 30 精选外部** = 48（含战役协议 V3.4 + 机检武器库） | **9** 个可移植 + 战役协议映射（`docs/campaign-universal.md`） |
 | 记忆闭环 | profile 内 `memory/` 预置；Agent 每任务先读、做完即更新 | 同样的 4 文件种子，通过项目 `memory/` 目录接入 |
 | 自进化 | 有 — 新 skill 自动存入 profile | 手动（编辑 skill 文件） |
 | 强制力 | 协议级约束（建议性） | 协议级约束；hook 硬拦截 = Gatekeeper 路线图 |
@@ -170,7 +183,7 @@ git clone https://github.com/sean2010zhang-star/work-os && cd work-os && ./insta
 
 1. 自动检测 Hermes（未安装则打印获取方式 + 你所用宿主的 Universal 路径）
 2. 创建**隔离 profile** `work-os` —— 现有环境零改动，一条命令切回
-3. 安装 SOUL.md（协议即系统提示词）+ 17 个系统 skill + 30 个精选外部 skill
+3. 安装 SOUL.md（协议即系统提示词）+ 18 个系统 skill + 30 个精选外部 skill
 4. 预置 `memory/`（绝不覆盖你自己的）—— 首次会话自动采访你填写偏好
 5. 从你的配置**复制你自己的**模型/供应商段（本仓库永远不携带任何 key）
 6. 检查可选依赖（`git`/`node`/`rsync` → 解锁对应 Gate/备份层）
@@ -196,11 +209,20 @@ git clone https://github.com/sean2010zhang-star/work-os && cd work-os && ./insta
   → [收尾]    commit+tag · 逐项验证完成度 · 4 层备份 · 教训回灌 memory/skill
 ```
 
-长程无人值守开发由 **Campaign Edition** 协议接管：签署 Mission Contract（授权前置）、
-崩溃可续跑断点三件套、防回归累积清单、token 预算熔断 ——
-`profile/skills/longrun-campaign/`，非 Hermes 宿主映射见 `docs/campaign-universal.md`。
+长程无人值守开发由 **Campaign Edition** 协议（V3.4）接管：10 节 Mission Contract（授权前置）、
+Gate 0 材料评审、L1/L2/L3 重量门、断点三件套、token/墙钟预算熔断——并把文字规矩下沉为
+**8 个确定性机检脚本武器库**（scope_check / gate_recorder 负向自检 / cursor_check /
+fixture_check 假测试 AST / value_check / heartbeat_check 看门狗 / arch_check / gitguard
+git 写拦截闸），见 `profile/skills/longrun-campaign/scripts/`，非 Hermes 宿主映射见
+`docs/campaign-universal.md`。
 
-## 别人装完能到我本机这个效果吗？
+## 协议是可以被测量的，不只是被相信
+
+战役协议经对抗式评测迭代：真实事故改编的迷宫题、预先写死的中立判据、每轮换全新 Runner
+（对称题曾给融合版 97.5/100，同一文档换真实事故题只有 66——偏置教训已文档化）。
+方法论见 `profile/skills/protocol-doc-benchmarking/`（含十类事故原型题库，可直接给任意流程文档打分）。
+
+## 别人装完能到我本机这个效果？
 
 诚实的分层回答见 [`docs/effectiveness.md`](docs/effectiveness.md)：
 纪律层 ≈100% 即装即得 · 方法库 ~90% · 记忆层从 0 随使用生长 · 垂直领域资产有意不包含。
@@ -210,8 +232,9 @@ git clone https://github.com/sean2010zhang-star/work-os && cd work-os && ./insta
 
 - **v1.5.x（当前）** — 纪律包本体：协议 + 47 skill + 记忆种子 + 首跑采访 + 战役协议。
   Hermes / Claude Code / Codex 三宿主适配。
-- **v1.6+** — **Gatekeeper**：薄 CLI 借各宿主 hook 系统在代码层**强制执行** Gate
-  （PreToolUse 拦截、Stop 钩子完成度检查）。设计稿 `docs/gatekeeper-design.md`。
+- **v1.6+** — **Gatekeeper**：战役 V3.4 已内置 gitguard（git 写拦截闸）+ 机检武器库作为
+  协议级执法；下一步是薄 CLI 借各宿主 hook 系统做 OS 级强制（PreToolUse 拦截、Stop 钩子
+  完成度检查）。设计稿 `docs/gatekeeper-design.md`。
 - **v2.0** — Agent 专家平台的专家人设封装（岗位说明书 + SOP + 知识库）。
 
 ## 理念

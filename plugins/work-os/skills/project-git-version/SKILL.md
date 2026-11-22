@@ -110,7 +110,7 @@ MAJOR.MINOR.PATCH
 | 3 | 记忆库 | 更新 <memory-vault>/projects/*.md | 项目状态文件 |
 | 4 | 会话记录 | 写入 <session-log>/session_YYYYMMDD_*.md | 会话记录 |
 
-自动化: 定时任务 job每日22:00执行 `backup_all.py`（job_id: fd6ddf36c9a9）
+自动化: 定时任务 job每日22:00执行 `backup_all.py`（job_id 见本机 cron 列表）
 手动执行: `python3 记忆库/scripts/backup_all.py`
 
 ## WHEN 触发条件
