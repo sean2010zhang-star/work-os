@@ -1,6 +1,6 @@
 {
   "name": "work-os",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Work OS discipline system installer. Detects agent hosts, installs the full system as a Hermes profile (preferred) or generic plugin pack.",
   "host_detection": {
     "hermes": [
