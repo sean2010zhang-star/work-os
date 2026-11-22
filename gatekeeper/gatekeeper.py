@@ -21,14 +21,14 @@ import sys
 import time
 from pathlib import Path
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 STATE_DIR = ".gatekeeper"
 DEFAULT_RULES = [
     {
         "id": "iron-1-plan-before-write",
         "law": "L3+ tasks need an approved PLAN before any write",
         "hook": "pre_tool_use",
-        "when": {"complexity_gte": "L3", "tools": ["Edit", "Write", "write_file", "patch", "MultiEdit"]},
+        "when": {"complexity_gte": "L3", "tools": ["Edit", "Write", "write_file", "patch", "MultiEdit", "done"]},
         "unless_state": "plan_approved",
         "strength": "deny",
         "reason": "IRON LAW 1: complexity>=L3 and no approved plan. Emit the [路由] decision block, write PLAN.md, then ask the user to run `gatekeeper approve` (only a human TTY can set the flag).",
@@ -64,6 +64,17 @@ DEFAULT_RULES = [
         "unless_state": "routed",
         "strength": "require-ack",
         "reason": "Entry protocol: run `gatekeeper route --complexity L<n> [--role r]` first (this mirrors emitting the [路由] block).",
+    },
+    {
+        # Anti-false-block covenant: the harness may ONLY stop a completion claim when it can
+        # cite a specific failed iron law. Never invent blocks to look powerful.
+        "id": "done-gate",
+        "law": "a 'done' claim may only be blocked by named, cited law failures",
+        "hook": "pre_tool_use",
+        "when": {"tools": ["done"]},
+        "unless_state": "done_verified",
+        "strength": "deny",
+        "reason": "IRON LAW 3/5 gate: run `gatekeeper verify-done` (mirrors the Stop hook: commit fresh + tree clean + checklist present). If it passes, the 'done' claim is allowed; the harness blocks completion claims on nothing else.",
     },
 ]
 
@@ -136,6 +147,7 @@ def cmd_init(args) -> int:
             "routed": False,
             "plan_approved": False,
             "plan_file": None,
+            "done_verified": False,
         })
     if args.rules and os.path.exists(args.rules):
         save_json(sp["rules"], load_json(Path(args.rules)) or DEFAULT_RULES)
@@ -161,7 +173,7 @@ def cmd_route(args) -> int:
     s.update({"complexity": args.complexity, "role": args.role, "routed": True,
               "task_class": args.task_class, "routed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z")})
     if args.reset:
-        s.update({"plan_approved": False, "plan_file": None})
+        s.update({"plan_approved": False, "plan_file": None, "done_verified": False})
     save_json(sp["session"], s)
     log_event(ws, {"event": "route", "complexity": args.complexity, "role": args.role, "class": args.task_class})
     print(f"routed: complexity={args.complexity} role={args.role} class={args.task_class}")
@@ -337,6 +349,31 @@ def cmd_stop(args) -> int:
     return 0
 
 
+def cmd_verify_done(args) -> int:
+    """Agent-side: run clean-close checks; if they pass, set done_verified so a `done`
+    verb is allowed. This mirrors the Stop hook, it does not replace it — the host hook
+    still re-checks independently at turn end (and a false allow there is caught then)."""
+    ns = argparse.Namespace(workspace=args.workspace, stdin=False)
+    import io, contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        cmd_stop(ns)
+    try:
+        v = json.loads(buf.getvalue())
+    except Exception:
+        v = {"decision": "block", "reason": "stop check unreadable"}
+    if v.get("decision") == "block":
+        print(json.dumps({"decision": "block", "reason": v.get("reason", "")}, ensure_ascii=False))
+        return 2
+    sp = state_paths(workspace(args))
+    s = load_json(sp["session"], {}) or {}
+    s["done_verified"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    save_json(sp["session"], s)
+    log_event(workspace(args), {"event": "done_verified"})
+    print("done_verified set: clean-close checks passed (Stop hook still re-checks independently).")
+    return 0
+
+
 def cmd_done_list(args) -> int:
     ws = workspace(args)
     sp = state_paths(ws)
@@ -498,6 +535,9 @@ def main(argv=None) -> int:
     p = sub.add_parser("stop", help="Stop-hook gate: clean tree + fresh commit + done list")
     p.add_argument("--stdin", action="store_true")
     p.set_defaults(fn=cmd_stop)
+
+    p = sub.add_parser("verify-done", help="run clean-close checks; on pass, allow a `done` claim")
+    p.set_defaults(fn=cmd_verify_done)
 
     p = sub.add_parser("done-list", help="record/show the completion checklist file")
     p.add_argument("--set")

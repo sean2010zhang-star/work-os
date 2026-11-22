@@ -178,16 +178,42 @@ def golden_mock_content_only_warns():
     assert "WARN" in r.stdout and r.returncode == 0, r.stdout
 
 
+def red_done_claim_needs_verified():
+    ws = fresh_repo()
+    route(ws, "L2")
+    (ws / "dirty.txt").write_text("x")  # dirty -> verify-done must refuse
+    r = gk(["verify-done"], ws)
+    assert r.returncode == 2 and "block" in r.stdout, (r.returncode, r.stdout)
+    # and a 'done' verb claim is blocked while unverified
+    r = gk(["pre", "--tool", "done", "--command", "task complete"], ws)
+    assert r.returncode == 2 and "done-gate" in r.stdout, r.stdout
+
+
+def golden_done_after_verify():
+    ws = fresh_repo()
+    route(ws, "L2")
+    subprocess.run(["git", "add", "-A"], cwd=ws, capture_output=True)
+    subprocess.run(["git", "commit", "-qm", "feat"], cwd=ws, capture_output=True)
+    (ws / "done.md").write_text("- [x] done")
+    gk(["done-list", "--set", str(ws / "done.md")], ws)
+    subprocess.run(["git", "add", "-A"], cwd=ws, capture_output=True)
+    subprocess.run(["git", "commit", "-qm", "docs: checklist"], cwd=ws, capture_output=True)
+    r = gk(["verify-done"], ws)
+    assert r.returncode == 0 and "done_verified" in r.stdout, r.stdout
+    r = gk(["pre", "--tool", "done", "--command", "task complete"], ws)
+    assert r.returncode == 0, f"verified done claim must pass, got {r.returncode}: {r.stdout}"
+
+
 def main():
     print("RED-TEAM (violations must block):")
     for f in [red_plan_before_write, red_auditor_git, red_stop_dirty, red_stop_no_done_list,
               red_approve_nonhuman, red_override_nonhuman, red_ack_needs_written_reason,
-              red_claude_hook_deny_shape]:
+              red_claude_hook_deny_shape, red_done_claim_needs_verified]:
         case(f.__name__, f)
     print("GOLDEN (legal flow must pass):")
     for f in [golden_flow_with_signature, golden_small_task_no_plan_needed,
               golden_l1_never_needs_ack_when_routed, golden_auditor_readonly_ok,
-              golden_mock_content_only_warns]:
+              golden_mock_content_only_warns, golden_done_after_verify]:
         case(f.__name__, f)
     print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
     # doctor as final gate

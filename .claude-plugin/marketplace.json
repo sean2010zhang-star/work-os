@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Execution discipline for AI agents: routing protocol, three-tier iron laws, Sprint/Gate gating, memory feedback \u2014 host-agnostic.",
-    "version": "1.7.1"
+    "version": "1.8.0"
   },
   "plugins": [
     {
       "name": "work-os",
       "description": "Discipline layer for coding agents: every task gets a routing decision first; delivery blocked unless gates pass. 9 skills + AGENTS.md protocol + memory seed.",
-      "version": "1.7.1",
+      "version": "1.8.0",
       "category": "workflow",
       "source": "./plugins/work-os",
       "strict": false

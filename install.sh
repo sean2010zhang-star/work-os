@@ -161,10 +161,16 @@ if [ "$DRY" = 0 ]; then
     echo "$OUT" | sed 's/^/    /'
   fi
   run "$HERMES_BIN" profile use work-os 2>/dev/null && say "work-os is now your default profile. Switch back: hermes profile use default" || say "Activate with: hermes profile use work-os  (or hermes -p work-os)"
-  # ── 7b. optional harness (layer 3) ───────────────────────────
+  # ── 7b. harness layer (layer 3) ──────────────────────────────
 if [ -f "$DIR/gatekeeper/gatekeeper.py" ]; then
-  say "Harness layer available (layer 3): python3 $DIR/gatekeeper/gatekeeper.py init --host <host>  # inside any project"
-  say "  Claude Code hooks enforce iron laws in code; run its 'doctor' self-test first."
+  # wire real tool-level hooks into the profile config (Hermes shell-hooks: pre_tool_call/pre_verify)
+  GK_PROFILE="$HOME/.hermes/profiles/work-os"
+  if [ -d "$GK_PROFILE" ]; then
+    python3 "$DIR/gatekeeper/gatekeeper.py" --workspace "$GK_PROFILE" init --host hermes 2>/dev/null \
+      && say "harness wired: hooks block added to profile config.yaml (approve the consent prompt once on next launch, or set hooks_auto_accept)" \
+      || say "harness wiring skipped (existing hooks block?) — see gatekeeper/README.md"
+  fi
+  say "Per-project harness: python3 $DIR/gatekeeper/gatekeeper.py init --host <host>  # Claude Code = real hooks, Hermes profile = already wired above"
 fi
 
 # ── 8. first-run onboarding: preference interview (L3 cold-start fix) ──

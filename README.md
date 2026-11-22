@@ -38,7 +38,7 @@ CLI that installs real PreToolUse/Stop hooks (Claude Code: hard deny with the vi
 fed back to the model; Hermes/Codex/Trae/WorkBuddy: strongest enforcement each host exposes,
 same kernel + same `.gatekeeper/` state — one brain, six connectors). Its core property:
 **`approve`/`override` are human-only** (TTY or signature file) — an agent cannot open its
-own gates. 13 red-team + golden E2E cases guard every rule.
+own gates. 27 red-team + golden E2E cases guard every rule (15 engine + 12 adapter/protocol).
 
 ## What's inside
 
@@ -62,7 +62,7 @@ own gates. 13 red-team + golden E2E cases guard every rule.
 | Skills | **18 system + 30 curated external** = 48 (incl. **V3.4 campaign protocol** with 8 machine-check scripts) | **9** portable + campaign mapping (`docs/campaign-universal.md`) |
 | Memory loop | profile `memory/` seeded; agent reads each task, updates after — full feedback loop | same 4-file seed, wired via `memory/` dir in your project |
 | Self-evolution | yes — new skills save into the profile automatically | manual (edit skill files) |
-| Enforcement | protocol + **Gatekeeper CLI** (hard hooks on Claude Code; strongest form per host) | protocol-disciplined (advisory) |
+| Enforcement | protocol + **Gatekeeper CLI**: real hooks on Claude Code AND Hermes (shell-hook bridge, consent-gated) | protocol-disciplined (advisory) |
 
 ### Hermes Edition — one command
 
@@ -125,11 +125,15 @@ vertical domain assets intentionally not included. Includes a 2-minute first-run
 
 ## Roadmap
 
-- **v1.7.x (current)** — three layers live: protocol + 48 skills (know) + SOUL/AGENTS (think)
-  + **Gatekeeper v0.1** (cannot-skip: single-file CLI, 6 host adapters, 13 red+golden E2E).
-  Hermes + Claude Code + Codex + Trae + WorkBuddy + generic wiring.
-- **v1.8+** — Hermes plugin exposing the hook bus natively; dsh adapter once it exits rc;
-  OS/sandbox-level forcing evaluated honestly (see gatekeeper/README limits, no overclaiming).
+- **v1.8.x (current)** — three layers live: protocol + 48 skills (know) + SOUL/AGENTS (think)
+  + **Gatekeeper v0.2** (cannot-skip): real tool-level hooks on BOTH first-class hosts —
+  Claude Code settings hooks and Hermes shell-hook bridge (`pre_tool_call` fail-closed deny,
+  `pre_verify` clean-close nudge) — CLI entry speaks both payload dialects; 27 red+golden E2E
+  cases (13 engine + 12 adapter/protocol); `release.sh` distribution gate; Hermes install now
+  wires the harness into the profile automatically.
+- **v1.9+** — dsh adapter once it exits rc; OS/sandbox-level forcing evaluated honestly
+  (see gatekeeper/README limits, no overclaiming); rules.json schema validation + mandatory
+  red-test probe per new rule.
 - **v2.0** — expert-persona packaging for agent-expert platforms. Early artifact already in-tree: `expert-package/` (role spec + SOP template, not yet wired into install).
 
 ## Philosophy
@@ -177,11 +181,12 @@ HARNESS 决定「能不能跳过」      → gatekeeper/（代码级拦截钩子
 ```
 
 三层是叠加关系，不是选型关系。前两层可以靠文本交付，**第三层才是纪律扛住压力的原因**。
-[`gatekeeper/`](gatekeeper/) 是单文件零依赖 Python CLI：Claude Code 上写真实
-PreToolUse/Stop hook（硬 deny + 把违反的铁律原文回灌给模型）；Hermes/Codex/Trae/WorkBuddy
-各接到该宿主能给出的最强形态——同一内核、同一 `.gatekeeper/` 状态格式，一套大脑六个插头。
-核心性质：**`approve`/`override` 只认人类**（TTY 或签名文件），Agent 无法给自己开绿灯。
-13 条红队+金样例 E2E 守着每一条规则。
+[`gatekeeper/`](gatekeeper/) 是单文件零依赖 Python CLI：两大主力宿主都是**真实拦截**——
+Claude Code 写 settings hooks；Hermes 走官方 shell-hook 桥（profile `config.yaml` 的
+`hooks:` → `pre_tool_call` fail-closed 硬 deny + `pre_verify` 完成度门，宿主首启有一次性
+consent，人类批准一次即可）；Codex/Trae/WorkBuddy 接到各自最强形态——同一内核、同一
+`.gatekeeper/` 状态格式，一套大脑六个插头。核心性质：**`approve`/`override` 只认人类**
+（TTY 或签名文件），Agent 无法给自己开绿灯。27 条红队+金样例 E2E 守着每一条规则。
 
 ## 系统包含什么
 
@@ -192,7 +197,7 @@ PreToolUse/Stop hook（硬 deny + 把违反的铁律原文回灌给模型）；H
 | **10 条强烈建议** | 只能说明理由后跳过（审计代理只读 · 先验证再修改 · 数字单一来源…） |
 | **质量红线** | 夹具诚实、异常与取数失败区分、敏感路径黑名单、git 历史锚定… |
 | **48 个 skill**（Hermes 版） | 路由、方法论、铁律全文、Sprint/Gate 分级、方案模板、交付审计清单、git 版本管理、跨项目陷阱库、**长程战役协议**（Mission Contract + 断点检查点 + 预算熔断），另含 30 个精选外部 skill（superpowers 开发套件、GitHub 运维、文档工具、研究工具） |
-| **`gatekeeper/`** | 第三层 harness：单文件 CLI + 6 宿主适配器；deny 规则=铁律的代码形态；approve 只认人类；13 条红队+金样例 E2E |
+| **`gatekeeper/`** | 第三层 harness：单文件 CLI + 6 宿主适配器；deny 规则=铁律的代码形态；approve 只认人类；27 条红队+金样例 E2E（15 引擎 + 12 适配/协议） |
 | `memory/` | 记忆反馈闭环的种子结构（索引/偏好/工作流教训/决策记录/项目档案）+ **首次运行强制采访**引导你填好偏好文件 |
 
 ## 两个版本 — 按你的宿主选择
@@ -205,7 +210,7 @@ PreToolUse/Stop hook（硬 deny + 把违反的铁律原文回灌给模型）；H
 | Skill | **18 系统 + 30 精选外部** = 48（含战役协议 V3.4 + 机检武器库） | **9** 个可移植 + 战役协议映射（`docs/campaign-universal.md`） |
 | 记忆闭环 | profile 内 `memory/` 预置；Agent 每任务先读、做完即更新 | 同样的 4 文件种子，通过项目 `memory/` 目录接入 |
 | 自进化 | 有 — 新 skill 自动存入 profile | 手动（编辑 skill 文件） |
-| 强制力 | 协议 + **Gatekeeper CLI**（Claude Code 硬 hook；各宿主接最强形态） | 协议级约束（建议性） |
+| 强制力 | 协议 + **Gatekeeper CLI**：Claude Code 与 Hermes 双宿主真实 hook（Hermes 走 shell-hook 桥，consent 一次） | 协议级约束（建议性） |
 
 ### Hermes Edition — 一条命令
 
@@ -263,12 +268,12 @@ git 写拦截闸），见 `profile/skills/longrun-campaign/scripts/`，非 Herme
 
 ## 路线图
 
-- **v1.7.x（当前）** — 三层全部在线：协议 + 48 skill（知道什么）+ SOUL/AGENTS（怎么想）+
-  **Gatekeeper v0.1**（能不能跳过：单文件 CLI、6 宿主适配器、13 条红队+金样例 E2E、
-  deny/ack/warn 三级强度对应三级铁律、人类专属 approve、规则新陈代谢 report）。
-  Hermes / Claude Code / Codex / Trae / WorkBuddy / generic 六宿主接线。
-- **v1.8+** — Hermes 插件原生暴露 hook 总线；dsh 过 rc 期后加适配；OS/沙箱级强制在
-  limits 里诚实评估，不虚标。
+- **v1.8.x（当前）** — 三层全部在线：协议 + 48 skill + SOUL/AGENTS + **Gatekeeper v0.2**：
+  两大主力宿主真实拦截（Claude Code settings hooks + Hermes shell-hook 桥），CLI 入口双方言，
+  27 条红队+金样例 E2E（15 引擎 + 12 适配/协议），`release.sh` 发布卫生闸，Hermes 安装
+  自动接线 harness。
+- **v1.9+** — dsh 过 rc 期后加适配；OS/沙箱级强制在 limits 里诚实评估，不虚标；rules.json
+  schema 校验 + 新规则必配红队探针。
 - **v2.0** — Agent 专家平台的专家人设封装（岗位说明书 + SOP + 知识库）。
 
 ## 理念

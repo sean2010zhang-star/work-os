@@ -17,6 +17,7 @@ enforcement automatically. The others wire what they CAN and document the rest.
 """
 import json
 import os
+import re
 from pathlib import Path
 
 
@@ -70,24 +71,62 @@ class ClaudeCodeAdapter(BaseAdapter):
 
 
 class HermesAdapter(BaseAdapter):
+    """Hermes has REAL tool-level hooks (agent/shell_hooks.py): config `hooks:` -> shell
+    scripts with the same stdin JSON envelope as Claude Code. pre_tool_call can BLOCK
+    (action:block / exit 2 / fail_closed); pre_verify is the Stop-equivalent nudge channel
+    ({"action":"continue","message":...} keeps the turn going). This adapter wires both.
+    Consent model (host-enforced, not ours): first launch prompts per (event, command)
+    unless `hooks_auto_accept: true` / `hermes --accept-hooks` / $HERMES_ACCEPT_HOOKS."""
+
     name = "hermes"
+    enforces = True  # via host shell hooks (consent-gated by the host itself)
+
+    # Hermes built-in tool names (fullmatch regex on the matcher field)
+    MATCHER = r"(write_file|patch|terminal|execute_code|code_execution|Write|Edit|MultiEdit|Bash)"
 
     def install(self):
-        soul_line = (
-            "\n## Gatekeeper enforcement (harness layer)\n"
-            "- Before ANY file write or shell command on an L3+ task: "
-            "`python3 {gk} --workspace <project> pre --tool <t> --command '<cmd>' --json`; "
-            "exit 2 = STOP, the reason is an iron law.\n"
-            "- Record routing: `gatekeeper route --complexity L<n> --role <r>` right after the [路由] block.\n"
-            "- Before claiming done: `gatekeeper stop --json` must print allow; keep a done.md ✅⚠️❌ list.\n"
-            "- `approve`/`override` are HUMAN commands (TTY or user_signature); never run them yourself.\n"
-        ).format(gk=self._gk())
-        return [
-            "hermes: no hook bus exposed to plugins yet — wired as SOUL-enforced manual discipline:",
-            "  append this block to your profile SOUL.md (idempotent):",
-            soul_line,
-            "  optional cron watchdog: run `gatekeeper report` daily; gate_log is append-only.",
+        cli = str(Path(__file__).resolve().parent / "hooks_cli.py")
+        py = os.environ.get("PYTHON_BIN", "python3")
+        block = (
+            "\n# gatekeeper harness (Work OS layer 3) — added by gatekeeper init\n"
+            "hooks:\n"
+            "  pre_tool_call:\n"
+            f"    - command: {py} {cli}\n"
+            "      matcher: \"(write_file|patch|terminal|execute_code|code_execution|Write|Edit|MultiEdit|Bash)\"\n"
+            "      timeout: 30\n"
+            "      fail_closed: true\n"
+            "  pre_verify:\n"
+            f"    - command: {py} {cli}\n"
+            "      timeout: 30\n"
+        )
+        cfg = Path(os.environ.get("GK_CONFIG") or (self.ws / "config.yaml"))
+        written = False
+        if cfg.exists():
+            t = cfg.read_text(encoding="utf-8")
+            if "gatekeeper harness" not in t:
+                # only append if there is no top-level hooks: key already
+                if not re.search(r"^hooks:", t, re.M):
+                    cfg.write_text(t.rstrip() + "\n" + block, encoding="utf-8")
+                    written = True
+                else:
+                    return ["hermes: config.yaml already has a `hooks:` block — merge the gatekeeper",
+                            "  entries manually (pre_tool_call + pre_verify -> " + cli + ")"]
+        else:
+            cfg.write_text(block.lstrip("\n"), encoding="utf-8")
+            written = True
+        lines = []
+        if written:
+            lines.append(f"hermes: hooks wired into {cfg} — pre_tool_call (block, fail_closed) + pre_verify (clean-close)")
+        lines += [
+            "  CONSENT (host-side, by design): first `hermes -p work-os chat` run will prompt to",
+            "  allow each (event,command) hook — approve once as the human, or set",
+            "  `hooks_auto_accept: true` in config / launch with --accept-hooks.",
+            "  Wire into the profile explicitly:  gatekeeper init --host hermes (run with",
+            "  --workspace pointing at ~/.hermes/profiles/work-os), or copy the block above.",
+            "  SOUL discipline block still recommended (documents the laws the hooks enforce):",
+            "  run `gatekeeper route/approve`; approve/override stay HUMAN-only commands.",
         ]
+        return lines
 
 
 class CodexAdapter(BaseAdapter):
