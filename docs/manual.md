@@ -211,6 +211,13 @@ A：确认激活了 work-os profile（`hermes profile list`）；Claude Code 确
 **Q：Hermes 启动时弹 hook consent 询问？**
 A：设计如此（宿主安全机制），你（人类）批准一次；或 config.yaml 设 `hooks_auto_accept: true`。
 
+**Q：Agent 回第一句话就停了/日志里出现 401，像是"卡住不自救"？**
+A：这是 LLM provider 的 API key 问题，不是流程 bug。401 auth 错误按设计**不可重试**
+（错误 key 重试一百次也不会变对），普通会话里表现为静默终止。修复：
+`hermes -p work-os model` 填 key，或在 profile 的 `.env` 里加 `ANTHROPIC_API_KEY=`。
+建议同时给 profile 配 `fallback_providers`（备用模型链），否则主模型持续 429/5xx 时同样会停。
+安装器会做冷启动自检并在缺 key 时先警告（v1.8.3+）。
+
 **Q：被 harness deny 了，但我就是要做？**
 A：说明它撞了哪条铁律。合法路径：小任务用 `route --complexity L1/L2`；方案任务
 `approve PLAN.md`（真实终端）；确实要破例用 `override --reason "..."`（同样只认人类），

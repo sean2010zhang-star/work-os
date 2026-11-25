@@ -173,6 +173,25 @@ if [ -f "$DIR/gatekeeper/gatekeeper.py" ]; then
   say "Per-project harness: python3 $DIR/gatekeeper/gatekeeper.py init --host <host>  # Claude Code = real hooks, Hermes profile = already wired above"
 fi
 
+# ── 7c. cold-start 401 guard (the "stuck on first message" trap) ──
+if [ -f "$HOME/.hermes/profiles/work-os/config.yaml" ]; then
+  if grep -qE 'api_mode: anthropic_messages' "$HOME/.hermes/profiles/work-os/config.yaml" && \
+     grep -qE '^\s{2}api_key: ""' "$HOME/.hermes/profiles/work-os/config.yaml"; then
+    ENVK="$HOME/.hermes/profiles/work-os/.env"
+    if ! grep -qE '^ANTHROPIC_API_KEY=..?' "$ENVK" 2>/dev/null; then
+      say "WARNING: no API key found anywhere for this profile — the FIRST message will 401 and the session dies silently (auth errors are non-retryable by design)."
+      say "  Fix before first run:  hermes -p work-os model    (or add ANTHROPIC_API_KEY= to $ENVK)"
+    else
+      say "api_key in config.yaml is empty BUT $ENVK provides ANTHROPIC_API_KEY — OK (.env wins at runtime)."
+    fi
+  fi
+  if ! grep -q "^fallback_providers:" "$HOME/.hermes/profiles/work-os/config.yaml" 2>/dev/null; then
+    say "no fallback_providers in profile config — on a persistent 429/5xx the session still stops."
+    say "  Recommended: paste your main config's fallback_providers block into $HOME/.hermes/profiles/work-os/config.yaml"
+    say "  (never commit or share that file — it can carry keys)"
+  fi
+fi
+
 # ── 8. first-run onboarding: preference interview (L3 cold-start fix) ──
   # SOUL.md hard rule: empty 偏好.md template → agent auto-interviews at first turn.
   if [ -t 0 ]; then
